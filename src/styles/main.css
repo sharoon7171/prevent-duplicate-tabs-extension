@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Popup specific width constraints */
+html[data-popup="true"],
+body[data-popup="true"] {
+  width: 520px;
+  min-width: 480px;
+  max-width: 520px;
+}
+
