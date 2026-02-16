@@ -4,6 +4,9 @@ node_modules/
 # Build output (Vite)
 dist/
 
+# Packaged extension (zip for Chrome Web Store)
+build/
+
 # OS
 .DS_Store
 Thumbs.db
