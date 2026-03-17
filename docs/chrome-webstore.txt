@@ -2,100 +2,46 @@
 DETAILED DESCRIPTION (paste below this into Chrome Web Store)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Prevent Duplicate Tabs – Chrome Extension | Stop Opening the Same Tab Twice
+Prevent Duplicate Tabs is a Chrome extension that blocks duplicate tabs automatically. If you open a link or URL that’s already open in another tab, it detects the duplicate and either closes it or switches you to the existing tab—so you get fewer tabs, less clutter, and lower memory use. No account, no sign-in; all settings and a local “duplicates prevented” count stay on your device.
 
-Stop duplicate tabs automatically. This free Chrome extension detects when you open the same webpage again and closes or switches tabs so you keep a cleaner browser and fewer tabs.
+Why use a duplicate tab blocker?
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WHY INSTALL PREVENT DUPLICATE TABS?
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Opening the same page in multiple tabs wastes RAM, slows Chrome, and makes it harder to find the tab you need. A tab manager that prevents duplicate tabs keeps your browser lean: you avoid accidentally opening the same article, doc, or site twice, and you choose what happens when a duplicate is detected—close the new tab, close the old one, or switch to the right tab. Useful for researchers, developers, and anyone who keeps many tabs open.
 
-• Reduce tab clutter – No more dozens of tabs with the same site.
-• Save memory – Fewer duplicate tabs means less RAM and a faster browser.
-• Stay focused – Avoid confusion from multiple copies of the same page.
-• One click to enable – Works as soon as you install; customize later if you want.
-• Lightweight – Runs in the background without slowing Chrome down.
-• Your data stays on your device – No analytics, no tracking, no data sent to servers.
+How it works
 
-Perfect for: power users, researchers, developers, students, and anyone who keeps many tabs open.
+When you open a new tab, the extension compares its URL to your open tabs (across all windows or only the current window—you choose). If it finds a match, it applies your chosen action right away. You can set a default behavior for all sites and override it per domain, so you can allow multiple Gmail tabs but block duplicates everywhere else.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WHAT DOES THIS EXTENSION DO?
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Duplicate tab detection and actions
 
-Prevent Duplicate Tabs watches when you open a new tab. If the URL matches one you already have open, it acts immediately:
+• Automatic detection – Compares new tab URLs to open tabs; no manual steps.
+• Four actions – Close the new duplicate and stay where you are; close the old duplicate and stay; close the new and switch to the existing tab; or close the old and switch to the new. When you switch, the correct window is focused and empty windows are closed.
+• All windows or current window – Check for duplicates across all Chrome windows or only in the current window.
+• Ignore URL parameters – Option to treat the same page with different query strings (e.g. ?id=1 vs ?id=2) as one URL, so you can block or allow duplicates based on your workflow.
 
-1. Detects duplicate tabs – Compares the new tab’s URL with your open tabs (across all windows or only the current window—you choose).
-2. Applies your chosen action – Closes the duplicate and optionally switches you to the right tab (and focuses the correct window).
-3. Respects your rules – You choose what counts as a duplicate and where duplicates are allowed.
+Exceptions and per-site rules
 
-You stay in control: enable or disable the extension anytime, and set global and per-site rules. You can also choose whether to prevent duplicates across all windows or only within the current window.
+• Exceptions list – Allow duplicate tabs for specific URLs or whole domains (e.g. allow multiple Gmail tabs or several docs).
+• Per-site rules – Set a different duplicate action and “ignore URL parameters” per domain from the options page.
+• Popup toggles – From the extension icon, turn the extension on or off, or allow duplicates for “this page only” or “this domain only” without opening options.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-HOW TO HANDLE DUPLICATES (YOU CHOOSE)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Control and stats
 
-When a duplicate is detected, you can set one of these actions (globally or per website):
+• Enable or disable anytime – One toggle in the popup.
+• Local stats – See how many tabs you have open and how many duplicates were prevented; stored on your device only.
+• Options page – Full control: default action, scope (all windows or current window), ignore-parameters, exceptions list, and site-specific rules. Right-click the icon → Options.
 
-• Close the new duplicate tab and stay on your current tab – You keep working where you are; the new tab is closed.
-• Close the old duplicate and stay on your current tab – The older tab is closed; you stay on the one you’re on.
-• Close the new duplicate and switch to the existing tab – The new tab is closed and you’re taken to the tab that was already open.
-• Close the old duplicate and switch to the new tab – The old tab is closed and you’re taken to the new one.
+Use cases and benefits
 
-You can set a default for all sites and override it for specific domains (e.g. different behavior for Gmail vs. docs).
+• Reduce tab clutter – Stop ending up with dozens of tabs for the same site.
+• Save memory – Fewer duplicate tabs mean less RAM and a faster browser.
+• Stay focused – No confusion from multiple copies of the same page.
+• Different behavior per site – Block duplicates on most sites but allow multiple tabs for email, docs, or tools that need them.
+• No account – Install and use; all settings stay in your browser.
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-KEY FEATURES (FROM THE EXTENSION)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Privacy and permissions
 
-✓ Automatic duplicate tab detection – Compares URLs; no manual steps.
-✓ All windows or current window – Choose whether to check for duplicates across all windows or only in the current window.
-✓ Four duplicate actions – Close new or old, stay or switch; pick what fits your workflow. When switching, the correct window is focused; empty windows are closed automatically.
-✓ Ignore URL parameters – Option to treat example.com/page and example.com/page?id=1 as the same (or not).
-✓ Exceptions list – Allow duplicates for specific URLs or whole domains (e.g. allow multiple Gmail tabs).
-✓ Current page & domain toggles – From the popup, allow duplicates for “this page only” or “this whole domain.”
-✓ Site-specific rules – Set a different duplicate action and “ignore parameters” per domain.
-✓ Enable/disable anytime – One toggle in the popup to turn the extension on or off.
-✓ Simple stats – See active tab count and how many duplicates were prevented (stored locally only).
-✓ Popup + full options page – Quick settings in the popup; full control and exception list in the options page.
-✓ No account, no sign-in – Install and use; all settings stored in your browser.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-WHO IS THIS FOR?
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-• Chrome users who open many tabs and want to avoid duplicates.
-• Anyone searching for “prevent duplicate tabs,” “block duplicate tabs,” or “Chrome tab manager.”
-• People who want less tab clutter and a cleaner browser without closing tabs by hand.
-• Users who need different behavior on different sites (e.g. allow duplicates on some, block on others).
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-PRIVACY & PERMISSIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-The extension uses:
-
-• Tabs permission – To read tab URLs for duplicate detection and to close or switch tabs when a duplicate is found.
-• Storage permission – To save your settings and a local count of duplicates prevented on your device.
-• Windows permission – To focus the correct window when switching to a duplicate in another window and to close empty windows after a duplicate tab is removed.
-
-It does not read page content, does not send your data to any server, and does not use analytics or tracking. Your settings and the “duplicates prevented” count stay on your device. See the extension’s privacy policy for full details.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-QUICK START
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. Install the extension – It starts working with default settings.
-2. Open the popup (click the extension icon) – Turn it on/off or allow duplicates for the current page/domain.
-3. Open the options page (right‑click icon → Options) – Set global duplicate action, scope (all windows or current window only), ignore-parameters, exceptions list, and site-specific rules.
-
-No account or setup required. Install and use.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-SUMMARY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Prevent Duplicate Tabs is a free Chrome extension that stops you from opening the same URL in multiple tabs. You choose how duplicates are handled (close new or old, stay or switch), whether to check all windows or only the current window, set exceptions and per-site rules, and keep your tab bar cleaner with no data sent to external servers. Install it to reduce duplicate tabs and improve your browsing experience.
+The extension uses the tabs permission (to read tab URLs for duplicate detection and to close or switch tabs), storage (to save your settings and local “duplicates prevented” count), and windows (to focus the right window when switching and to close empty windows). It does not read page content, does not send your data to any server, and does not use analytics or tracking. See the extension privacy policy for full details.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CATEGORY: Tools
