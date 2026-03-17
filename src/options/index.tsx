@@ -74,7 +74,7 @@ const Options: React.FC = (): React.JSX.Element => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen flex flex-col bg-white">
       <Header 
         title="Prevent Duplicate Tabs"
         subtitle="Extension configuration"

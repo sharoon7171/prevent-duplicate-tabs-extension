@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: #3182ce;
+  --color-brand-dark: #2c5aa0;
+  --color-accent-green: #38a169;
+  --color-accent-red: #e53e3e;
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-card-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-header: 0 4px 20px rgba(49, 130, 206, 0.2);
+}
+
 body {
   font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -8,11 +18,18 @@ body {
   color: #111827;
 }
 
-/* Popup specific width constraints */
+.gradient-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-accent-green) 50%, var(--color-accent-red) 100%);
+}
+
 html[data-popup="true"],
 body[data-popup="true"] {
   width: 520px;
   min-width: 480px;
   max-width: 520px;
 }
-

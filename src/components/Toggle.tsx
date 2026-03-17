@@ -1,5 +1,11 @@
 import React from 'react';
-import type { ToggleProps } from '@/types/components';
+
+interface ToggleProps {
+  label: string;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
+  className?: string;
+}
 
 export const Toggle: React.FC<ToggleProps> = ({
   label,
@@ -32,9 +38,8 @@ export const Toggle: React.FC<ToggleProps> = ({
           relative inline-flex h-7 w-12 shrink-0 cursor-pointer rounded-full border-2 border-transparent
           transition-all duration-300 ease-in-out focus:outline-none
           shadow-inner
-          ${checked ? '' : 'bg-gray-300'}
+          ${checked ? 'bg-brand' : 'bg-gray-300'}
         `}
-        style={checked ? { backgroundColor: '#3182ce' } : undefined}
       >
         <span
           className={`

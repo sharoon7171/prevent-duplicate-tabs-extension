@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import type { ExtensionStatusProps } from '@/types/components';
-import type { DuplicateScope } from '@/types/settings';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
+
+interface ExtensionStatusProps {
+  enabled?: boolean;
+  className?: string;
+  initialEnabled?: boolean;
+}
 
 export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
   enabled: propEnabled,
@@ -47,22 +51,9 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border shadow-md p-3 sm:p-4 transition-all duration-300 flex flex-col hover:shadow-lg ${isEnabled ? 'border-emerald-200' : 'border-gray-200'} ${className}`}
-      style={{
-        background: isEnabled
-          ? 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)'
-          : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-      }}
+      className={`relative overflow-hidden rounded-xl border shadow-card p-3 sm:p-4 transition-all duration-300 flex flex-col hover:shadow-lg bg-linear-to-br from-white to-slate-50 ${isEnabled ? 'border-emerald-200' : 'border-gray-200'} ${className}`}
     >
-      <div
-        className="absolute top-0 left-0 right-0"
-        style={{
-          height: '3px',
-          background: 'linear-gradient(90deg, #3182ce 0%, #38a169 50%, #e53e3e 100%)',
-          borderRadius: '12px 12px 0 0',
-        }}
-      />
+      <div className="gradient-bar rounded-t-xl" />
       <div className="flex items-center justify-between flex-1">
         <div className="flex-1">
           <h3 className="text-base font-black text-black mb-0.5">

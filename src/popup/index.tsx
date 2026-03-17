@@ -72,7 +72,7 @@ const Popup: React.FC = (): React.JSX.Element => {
   }
 
   return (
-    <div className="min-w-[480px] max-w-[520px] flex flex-col" style={{ backgroundColor: '#f7fafc' }}>
+    <div className="min-w-[480px] max-w-[520px] flex flex-col bg-slate-50">
       <Header 
         title="Prevent Duplicate Tabs"
         subtitle="Extension settings"

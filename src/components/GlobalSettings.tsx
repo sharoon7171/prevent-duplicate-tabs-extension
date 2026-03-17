@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import type { GlobalSettingsProps } from '@/types/components';
 import type { DuplicateAction } from '@/types/settings';
 import { RadioGroup } from './RadioGroup';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
+
+interface GlobalSettingsProps {
+  duplicateAction?: DuplicateAction;
+  ignoreParameters?: boolean;
+  className?: string;
+  initialGlobalSettings?: {
+    duplicateAction: DuplicateAction;
+    ignoreParameters: boolean;
+  };
+}
 
 const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-new-stay-current', label: 'Close new duplicate tab and stay on current tab' },
@@ -70,23 +79,12 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-md p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 ${className}`}
-      style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-      }}
+      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-card p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-linear-to-br from-white to-slate-50 ${className}`}
     >
-      <div
-        className="absolute top-0 left-0 right-0"
-        style={{
-          height: '3px',
-          background: 'linear-gradient(90deg, #3182ce 0%, #38a169 50%, #e53e3e 100%)',
-          borderRadius: '12px 12px 0 0',
-        }}
-      />
+      <div className="gradient-bar rounded-t-xl" />
       <div className="flex items-center gap-2 mb-4">
         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border-2 border-blue-200">
-          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>

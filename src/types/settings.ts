@@ -1,5 +1,3 @@
-import type { SiteRule } from './components';
-
 export type DuplicateAction =
   | 'close-new-stay-current'
   | 'close-old-stay-current'
@@ -7,6 +5,12 @@ export type DuplicateAction =
   | 'close-old-switch-new';
 
 export type DuplicateScope = 'all-windows' | 'current-window';
+
+export interface SiteRule {
+  domain: string;
+  duplicateAction: DuplicateAction;
+  ignoreParameters: boolean;
+}
 
 export interface ExtensionSettings {
   enabled: boolean;

@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build && BUILD_BACKGROUND=1 vite build",
+    "build:zip": "bash scripts/build-zip.sh",
     "dev": "EMPTY_OUT_DIR=0 vite build --watch --mode development & BUILD_BACKGROUND=1 vite build --watch --mode development & wait",
     "type-check": "tsc --noEmit"
   },

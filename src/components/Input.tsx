@@ -1,5 +1,14 @@
 import React from 'react';
-import type { InputProps } from '@/types/components';
+
+interface InputProps {
+  label?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  className?: string;
+  type?: string;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+}
 
 export const Input: React.FC<InputProps> = ({
   label,
@@ -23,7 +32,7 @@ export const Input: React.FC<InputProps> = ({
         onChange={(e): void => onChange(e.target.value)}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-sm font-medium text-gray-900 placeholder-gray-500 transition-all duration-200 hover:border-gray-400"
+        className="w-full px-4 py-2.5 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-brand text-sm font-medium text-gray-900 placeholder-gray-500 transition-all duration-200 hover:border-gray-400"
       />
     </div>
   );

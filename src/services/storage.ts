@@ -11,6 +11,7 @@ class StorageService {
   private statisticsListeners: Set<StatisticsListener> = new Set();
   private changeListenerInitialized: boolean = false;
 
+  /** Returns settings: no stored value (e.g. first install) or missing fields use defaults; otherwise user values. */
   async getSettings(): Promise<ExtensionSettings> {
     try {
       const result = await chrome.storage.sync.get(SETTINGS_STORAGE_KEY);

@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import type { ExceptionsProps } from '@/types/components';
 import { Input } from './Input';
+import { Button } from './Button';
 import { storageService } from '@/services/storage';
 import { normalizeException } from '@/utils/urlNormalization';
+
+interface ExceptionsProps {
+  items?: string[];
+  className?: string;
+  initialExceptions?: string[];
+}
 
 export const Exceptions: React.FC<ExceptionsProps> = ({
   items: propItems,
@@ -113,20 +119,9 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-md p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 ${className}`}
-      style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-      }}
+      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-card p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-linear-to-br from-white to-slate-50 ${className}`}
     >
-      <div
-        className="absolute top-0 left-0 right-0"
-        style={{
-          height: '3px',
-          background: 'linear-gradient(90deg, #3182ce 0%, #38a169 50%, #e53e3e 100%)',
-          borderRadius: '12px 12px 0 0',
-        }}
-      />
+      <div className="gradient-bar rounded-t-xl" />
       <div className="flex items-center gap-2 mb-4">
         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border-2 border-amber-200">
           <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,22 +153,9 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
             onKeyDown={handleInputKeyDown}
           />
         </div>
-        <button
-          type="button"
-          onClick={handleAdd}
-          className="px-6 py-2.5 text-white text-sm font-bold rounded-xl focus:outline-none transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap sm:w-auto w-full transform hover:scale-105"
-          style={{
-            background: 'linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%)',
-          }}
-          onMouseEnter={(e): void => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, #2c5aa0 0%, #1e3f73 100%)';
-          }}
-          onMouseLeave={(e): void => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%)';
-          }}
-        >
+        <Button onClick={handleAdd} className="whitespace-nowrap sm:w-auto w-full">
           Add Exception
-        </button>
+        </Button>
       </div>
 
       {exceptionItems.length > 0 && (
@@ -204,34 +186,29 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
                         value={editingValue}
                         onChange={(e): void => setEditingValue(e.target.value)}
                         onKeyDown={(e): void => handleKeyDown(e, index, item)}
-                        className="flex-1 min-w-0 px-4 py-2.5 border-2 border-blue-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 text-sm font-medium text-gray-900 bg-white"
+                        className="flex-1 min-w-0 px-4 py-2.5 border-2 border-blue-300 rounded-lg shadow-sm focus:outline-none focus:border-brand text-sm font-medium text-gray-900 bg-white"
                         autoFocus
                       />
                       <div className="flex items-center gap-2 shrink-0">
-                        <button
-                          type="button"
+                        <Button
+                          variant="ghost"
+                          color="success"
                           onClick={(): void => {
                             handleEditSave(index, item).catch((error) => {
                               console.error('Error saving edit:', error);
                             });
                           }}
-                          className="text-green-600 hover:text-green-700 hover:bg-green-50 text-sm font-bold focus:outline-none rounded-lg px-3 py-1.5 transition-all duration-200"
                           title="Save (Enter)"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={handleEditCancel}
-                          className="text-gray-600 hover:text-gray-700 hover:bg-gray-50 text-sm font-bold focus:outline-none rounded-lg px-3 py-1.5 transition-all duration-200"
-                          title="Cancel (Esc)"
-                        >
+                        </Button>
+                        <Button variant="ghost" color="muted" onClick={handleEditCancel} title="Cancel (Esc)">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                           </svg>
-                        </button>
+                        </Button>
                       </div>
                     </>
                   ) : (
@@ -244,27 +221,27 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
                         {item}
                       </span>
                       <div className="flex items-center gap-2 shrink-0">
-                        <button
-                          type="button"
+                        <Button
+                          variant="ghost"
+                          color="brand"
                           onClick={(): void => handleEditStart(index, item)}
-                          className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 text-sm font-bold focus:outline-none rounded-lg px-3 py-1.5 transition-all duration-200"
                           title="Edit"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                           </svg>
-                        </button>
-                        <button
-                          type="button"
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          color="danger"
                           onClick={(): void => {
                             handleRemove(item).catch((error) => {
                               console.error('Error removing exception:', error);
                             });
                           }}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50 text-sm font-bold focus:outline-none rounded-lg px-3 py-1.5 transition-all duration-200"
                         >
                           Remove
-                        </button>
+                        </Button>
                       </div>
                     </>
                   )}

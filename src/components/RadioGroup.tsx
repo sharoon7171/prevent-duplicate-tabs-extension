@@ -1,5 +1,17 @@
 import React from 'react';
-import type { RadioGroupProps } from '@/types/components';
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface RadioGroupProps {
+  label?: string;
+  value: string;
+  options: readonly SelectOption[];
+  onChange?: (value: string) => void;
+  className?: string;
+}
 
 export const RadioGroup: React.FC<RadioGroupProps> = ({
   label,
@@ -39,24 +51,13 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               onClick={(): void => handleChange(option.value)}
               className={`
                 w-full text-left p-2.5 rounded-lg border transition-all duration-300
-                focus:outline-none
+                focus:outline-none bg-linear-to-br from-white to-slate-50 shadow-card-sm
                 ${
                   isSelected
                     ? 'border-gray-300 shadow-md'
                     : 'border-gray-200 hover:border-gray-300 hover:-translate-y-0.5 hover:shadow-lg'
                 }
               `}
-              style={
-                isSelected
-                  ? {
-                      background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                    }
-                  : {
-                      background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-                    }
-              }
             >
               <div className="flex items-start gap-2">
                 <div
@@ -65,18 +66,10 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                   transition-all duration-200
                   ${
                     isSelected
-                      ? 'border-gray-300 bg-white'
+                      ? 'border-brand bg-brand'
                       : 'border-gray-300 bg-white'
                   }
                 `}
-                  style={
-                    isSelected
-                      ? {
-                          borderColor: '#3182ce',
-                          backgroundColor: '#3182ce',
-                        }
-                      : undefined
-                  }
                 >
                   {isSelected && (
                     <svg
@@ -94,20 +87,9 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 </div>
                 <span
                   className={`
-                  text-sm font-medium flex-1
-                  ${isSelected ? 'text-gray-900' : 'text-gray-700'}
+                  text-sm flex-1
+                  ${isSelected ? 'text-gray-900 font-semibold' : 'text-gray-700 font-medium'}
                 `}
-                  style={
-                    isSelected
-                      ? {
-                          color: '#111827',
-                          fontWeight: 600,
-                        }
-                      : {
-                          color: '#374151',
-                          fontWeight: 500,
-                        }
-                  }
                 >
                   {option.label}
                 </span>

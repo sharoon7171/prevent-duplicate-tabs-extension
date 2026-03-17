@@ -1,5 +1,13 @@
 import React from 'react';
-import type { HeaderProps } from '@/types/components';
+
+interface HeaderProps {
+  title: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
+  actions?: React.ReactNode;
+  className?: string;
+  stats?: { currentTabsCount: number; tabsClosedCount: number };
+}
 
 export const Header: React.FC<HeaderProps> = ({
   title,
@@ -21,9 +29,6 @@ export const Header: React.FC<HeaderProps> = ({
       src={getIconSrc()}
       alt="Extension Icon"
       className="w-10 h-10 rounded-lg shadow-md border-2 border-white/20"
-      style={{
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-      }}
     />
   );
 
@@ -31,20 +36,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`w-full text-white shadow-lg relative overflow-hidden transition-all duration-300 hover:shadow-xl ${className}`}
-      style={{
-        background: 'linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%)',
-        boxShadow: '0 4px 20px rgba(49, 130, 206, 0.2)',
-      }}
+      className={`w-full text-white shadow-header relative overflow-hidden transition-all duration-300 hover:shadow-xl bg-linear-to-br from-brand to-brand-dark ${className}`}
     >
-      <div
-        className="absolute top-0 left-0 right-0 h-0.75"
-        style={{
-          height: '3px',
-          background: 'linear-gradient(90deg, #3182ce 0%, #38a169 50%, #e53e3e 100%)',
-          borderRadius: '16px 16px 0 0',
-        }}
-      />
+      <div className="gradient-bar rounded-t-2xl" />
       <div className="max-w-6xl mx-auto px-3 py-3 sm:px-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-3 min-w-0">

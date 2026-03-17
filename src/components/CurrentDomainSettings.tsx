@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import type { CurrentDomainSettingsProps } from '@/types/components';
 import { Toggle } from './Toggle';
 import { RadioGroup } from './RadioGroup';
+import { Button } from './Button';
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings, DuplicateAction } from '@/types/settings';
 import { normalizeException, isPageInExceptions, isDomainInExceptions } from '@/utils/urlNormalization';
+
+interface CurrentDomainSettingsProps {
+  className?: string;
+  initialSettings?: ExtensionSettings;
+}
 
 const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-new-stay-current', label: 'Close new duplicate tab and stay on current tab' },
@@ -139,23 +144,12 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
 
   return (
     <div 
-      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-md p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 ${className}`}
-      style={{
-        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-        boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
-      }}
+      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-card p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-linear-to-br from-white to-slate-50 ${className}`}
     >
-      <div
-        className="absolute top-0 left-0 right-0"
-        style={{
-          height: '3px',
-          background: 'linear-gradient(90deg, #3182ce 0%, #38a169 50%, #e53e3e 100%)',
-          borderRadius: '12px 12px 0 0',
-        }}
-      />
+      <div className="gradient-bar rounded-t-xl" />
       <div className="flex items-center gap-2 mb-4">
         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border-2 border-blue-200">
-          <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
           </svg>
         </div>
@@ -204,13 +198,9 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
               Site-Specific Rules
             </h3>
             {hasSiteRule && (
-              <button
-                type="button"
-                onClick={handleRemoveSiteRule}
-                className="text-xs font-bold text-red-600 hover:text-red-700 hover:bg-red-50 px-2 py-1 rounded transition-all duration-200"
-              >
+              <Button variant="ghost" color="danger" onClick={handleRemoveSiteRule} className="text-xs px-2 py-1">
                 Remove Rule
-              </button>
+              </Button>
             )}
           </div>
           
@@ -252,4 +242,3 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
     </div>
   );
 };
-
