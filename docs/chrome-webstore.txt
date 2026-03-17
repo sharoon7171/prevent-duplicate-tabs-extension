@@ -25,11 +25,11 @@ WHAT DOES THIS EXTENSION DO?
 
 Prevent Duplicate Tabs watches when you open a new tab. If the URL matches one you already have open, it acts immediately:
 
-1. Detects duplicate tabs – Compares the new tab’s URL with your open tabs.
-2. Applies your chosen action – Closes the duplicate and optionally switches you to the right tab.
+1. Detects duplicate tabs – Compares the new tab’s URL with your open tabs (across all windows or only the current window—you choose).
+2. Applies your chosen action – Closes the duplicate and optionally switches you to the right tab (and focuses the correct window).
 3. Respects your rules – You choose what counts as a duplicate and where duplicates are allowed.
 
-You stay in control: enable or disable the extension anytime, and set global and per-site rules.
+You stay in control: enable or disable the extension anytime, and set global and per-site rules. You can also choose whether to prevent duplicates across all windows or only within the current window.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 HOW TO HANDLE DUPLICATES (YOU CHOOSE)
@@ -49,7 +49,8 @@ KEY FEATURES (FROM THE EXTENSION)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ✓ Automatic duplicate tab detection – Compares URLs; no manual steps.
-✓ Four duplicate actions – Close new or old, stay or switch; pick what fits your workflow.
+✓ All windows or current window – Choose whether to check for duplicates across all windows or only in the current window.
+✓ Four duplicate actions – Close new or old, stay or switch; pick what fits your workflow. When switching, the correct window is focused; empty windows are closed automatically.
 ✓ Ignore URL parameters – Option to treat example.com/page and example.com/page?id=1 as the same (or not).
 ✓ Exceptions list – Allow duplicates for specific URLs or whole domains (e.g. allow multiple Gmail tabs).
 ✓ Current page & domain toggles – From the popup, allow duplicates for “this page only” or “this whole domain.”
@@ -76,6 +77,7 @@ The extension uses:
 
 • Tabs permission – To read tab URLs for duplicate detection and to close or switch tabs when a duplicate is found.
 • Storage permission – To save your settings and a local count of duplicates prevented on your device.
+• Windows permission – To focus the correct window when switching to a duplicate in another window and to close empty windows after a duplicate tab is removed.
 
 It does not read page content, does not send your data to any server, and does not use analytics or tracking. Your settings and the “duplicates prevented” count stay on your device. See the extension’s privacy policy for full details.
 
@@ -85,7 +87,7 @@ QUICK START
 
 1. Install the extension – It starts working with default settings.
 2. Open the popup (click the extension icon) – Turn it on/off or allow duplicates for the current page/domain.
-3. Open the options page (right‑click icon → Options) – Set global duplicate action, ignore-parameters, exceptions list, and site-specific rules.
+3. Open the options page (right‑click icon → Options) – Set global duplicate action, scope (all windows or current window only), ignore-parameters, exceptions list, and site-specific rules.
 
 No account or setup required. Install and use.
 
@@ -93,7 +95,7 @@ No account or setup required. Install and use.
 SUMMARY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Prevent Duplicate Tabs is a free Chrome extension that stops you from opening the same URL in multiple tabs. You choose how duplicates are handled (close new or old, stay or switch), set exceptions and per-site rules, and keep your tab bar cleaner with no data sent to external servers. Install it to reduce duplicate tabs and improve your browsing experience.
+Prevent Duplicate Tabs is a free Chrome extension that stops you from opening the same URL in multiple tabs. You choose how duplicates are handled (close new or old, stay or switch), whether to check all windows or only the current window, set exceptions and per-site rules, and keep your tab bar cleaner with no data sent to external servers. Install it to reduce duplicate tabs and improve your browsing experience.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CATEGORY: Tools
@@ -103,7 +105,7 @@ CATEGORY: Tools
 SINGLE PURPOSE (max 1000 characters – narrow and easy-to-understand)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-This extension has one purpose: to prevent duplicate browser tabs. When you open a tab with a URL that is already open, the extension detects it and closes or switches tabs according to your chosen setting (e.g. close the new tab, or close the old one and switch). You can allow duplicates for specific pages or domains via exceptions and per-site rules. All behavior is limited to tab management (detecting duplicate URLs and closing or switching tabs); no other functionality is provided.
+This extension has one purpose: to prevent duplicate browser tabs. When you open a tab with a URL that is already open, the extension detects it and closes or switches tabs according to your chosen setting (e.g. close the new tab, or close the old one and switch). You can choose to check duplicates across all windows or only the current window. When switching to a tab in another window, the extension focuses that window; if removing a duplicate leaves a window empty, it closes that window. You can allow duplicates for specific pages or domains via exceptions and per-site rules. All behavior is limited to tab and window management for duplicate prevention; no other functionality is provided.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PERMISSION JUSTIFICATIONS (max 1000 characters each)
@@ -113,7 +115,10 @@ tabs:
 The extension needs the "tabs" permission to fulfill its single purpose of preventing duplicate tabs. It uses chrome.tabs to: (1) Listen for new tabs (onCreated) and tab URL changes (onUpdated) so it can detect when a user opens a URL that is already open. (2) Query all open tabs (chrome.tabs.query) to compare the new tab’s URL with existing tabs and identify duplicates. (3) Get the currently active tab so the popup can show settings for “this page” or “this domain” and display the correct tab count. (4) Close duplicate tabs (chrome.tabs.remove) and switch the active tab (chrome.tabs.update) when the user’s chosen action is “close and switch.” Without the tabs permission, the extension cannot read tab URLs to detect duplicates or close/switch tabs; no other APIs provide this capability.
 
 storage:
-The extension needs the "storage" permission to fulfill its single purpose of preventing duplicate tabs. It uses chrome.storage.sync to: (1) Save the user’s on/off preference so the extension can be enabled or disabled. (2) Save the user’s chosen duplicate action (e.g. close new tab, close old tab, switch to existing) and “ignore URL parameters” setting so the correct behavior is applied. (3) Save the user’s exception lists (specific URLs and domains where duplicates are allowed) and site-specific rules so duplicate detection respects the user’s choices. (4) Store a count of “duplicates prevented” shown in the popup. Without storage, the extension could not remember any settings or exceptions and would not function as intended. No data is sent to external servers; storage is synced by Chrome across the user’s device.
+The extension needs the "storage" permission to fulfill its single purpose of preventing duplicate tabs. It uses chrome.storage.sync to: (1) Save the user’s on/off preference so the extension can be enabled or disabled. (2) Save the user’s chosen duplicate action (e.g. close new tab, close old tab, switch to existing), “prevent duplicates in” scope (all windows or current window only), and “ignore URL parameters” setting so the correct behavior is applied. (3) Save the user’s exception lists (specific URLs and domains where duplicates are allowed) and site-specific rules so duplicate detection respects the user’s choices. (4) Store a count of “duplicates prevented” shown in the popup. Without storage, the extension could not remember any settings or exceptions and would not function as intended. No data is sent to external servers; storage is synced by Chrome across the user’s device.
+
+windows:
+The extension needs the "windows" permission to fulfill its single purpose of preventing duplicate tabs when the user’s chosen action involves another window. It uses chrome.windows to: (1) Focus the correct window when the user chooses “switch to existing tab” or “switch to new tab” and that tab is in a different window, so the user is taken to the right window. (2) Close a window that is left empty after the extension removes a duplicate tab (e.g. when a new window’s only tab was a duplicate). Without the windows permission, the extension could not focus the target window or clean up empty windows; tab switching would be less effective and empty windows would remain. No window data is stored or sent elsewhere.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 REMOTE CODE

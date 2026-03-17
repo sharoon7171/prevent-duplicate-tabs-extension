@@ -94,6 +94,7 @@ const sharedResolve = {
 };
 
 const isBackgroundOnly = process.env.BUILD_BACKGROUND === '1';
+const preserveOutput = process.env.EMPTY_OUT_DIR === '0';
 
 export default defineConfig({
   plugins: [...(isBackgroundOnly ? [] : [react()]), copyAssetsPlugin()],
@@ -117,7 +118,7 @@ export default defineConfig({
       }
     : {
         outDir: 'dist',
-        emptyOutDir: true,
+        emptyOutDir: !preserveOutput,
         minify: 'esbuild',
         rollupOptions: {
           input: {

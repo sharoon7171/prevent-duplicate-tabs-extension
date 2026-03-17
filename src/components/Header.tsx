@@ -11,9 +11,9 @@ export const Header: React.FC<HeaderProps> = ({
 }: HeaderProps): React.JSX.Element => {
   const getIconSrc = (): string => {
     if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
-      return chrome.runtime.getURL('icons/icon-48.png');
+      return chrome.runtime.getURL('icon-48.png');
     }
-    return '/icons/icon-48.png';
+    return '/icon-48.png';
   };
 
   const defaultIcon = (

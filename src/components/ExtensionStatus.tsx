@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { ExtensionStatusProps } from '@/types/components';
+import type { DuplicateScope } from '@/types/settings';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
 
@@ -9,16 +10,17 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
   className = '',
 }: ExtensionStatusProps): React.JSX.Element => {
   const [isEnabled, setIsEnabled] = useState<boolean>(initialEnabled ?? propEnabled ?? true);
+  const [checkAllWindows, setCheckAllWindows] = useState<boolean>(true);
 
   useEffect(() => {
-    if (initialEnabled === undefined) {
-      storageService.getSettings().then((settings) => {
-        setIsEnabled(settings.enabled);
-      });
-    }
+    storageService.getSettings().then((settings) => {
+      setCheckAllWindows(settings.globalSettings.duplicateScope === 'all-windows');
+      if (initialEnabled === undefined) setIsEnabled(settings.enabled);
+    });
 
     const unsubscribe = storageService.subscribe((settings) => {
       setIsEnabled(settings.enabled);
+      setCheckAllWindows(settings.globalSettings.duplicateScope === 'all-windows');
     });
 
     return (): void => {
@@ -29,6 +31,18 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
   const handleToggle = async (checked: boolean): Promise<void> => {
     setIsEnabled(checked);
     await storageService.updateSettings({ enabled: checked });
+  };
+
+  const handleScopeToggle = async (checked: boolean): Promise<void> => {
+    const scope: DuplicateScope = checked ? 'all-windows' : 'current-window';
+    setCheckAllWindows(checked);
+    const current = await storageService.getSettings();
+    await storageService.updateSettings({
+      globalSettings: {
+        ...current.globalSettings,
+        duplicateScope: scope,
+      },
+    });
   };
 
   return (
@@ -63,6 +77,22 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
           checked={isEnabled}
           onChange={handleToggle}
           className="ml-3"
+        />
+      </div>
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
+        <div className="flex-1 min-w-0 pr-3">
+          <p className="text-sm font-semibold text-black">
+            All windows
+          </p>
+          <p className="text-xs text-gray-600 mt-0.5">
+            When off, only the current window is checked
+          </p>
+        </div>
+        <Toggle
+          label=""
+          checked={checkAllWindows}
+          onChange={handleScopeToggle}
+          className="shrink-0"
         />
       </div>
     </div>

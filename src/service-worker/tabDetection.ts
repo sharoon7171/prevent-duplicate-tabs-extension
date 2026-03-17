@@ -82,6 +82,8 @@ class TabDetectionService {
 
     const ignoreParameters = siteRule?.ignoreParameters ?? this.currentSettings.globalSettings.ignoreParameters;
     const duplicateAction = siteRule?.duplicateAction ?? this.currentSettings.globalSettings.duplicateAction;
+    const duplicateScope = this.currentSettings.globalSettings.duplicateScope;
+    const scopeWindowId = duplicateScope === 'current-window' && tab.windowId !== undefined ? tab.windowId : undefined;
 
     const normalizedUrl = normalizeUrl(tab.url, ignoreParameters);
     if (!normalizedUrl) {
@@ -91,7 +93,7 @@ class TabDetectionService {
     this.processingTabs.add(tabId);
 
     try {
-      const duplicateTabs = await this.findDuplicateTabs(tab.url, tabId, ignoreParameters);
+      const duplicateTabs = await this.findDuplicateTabs(tab.url, tabId, ignoreParameters, scopeWindowId);
 
       if (duplicateTabs.length > 0) {
         const existingTab = duplicateTabs[0];
@@ -111,10 +113,12 @@ class TabDetectionService {
   private async findDuplicateTabs(
     url: string,
     excludeTabId: number,
-    ignoreParameters: boolean
+    ignoreParameters: boolean,
+    scopeWindowId?: number
   ): Promise<chrome.tabs.Tab[]> {
     try {
-      const allTabs = await chrome.tabs.query({});
+      const queryOptions = scopeWindowId !== undefined ? { windowId: scopeWindowId } : {};
+      const allTabs = await chrome.tabs.query(queryOptions);
       const normalizedUrl = normalizeUrl(url, ignoreParameters);
 
       if (!normalizedUrl) {
@@ -147,19 +151,30 @@ class TabDetectionService {
       return;
     }
 
+    const closeTabAndMaybeWindow = async (tabId: number): Promise<void> => {
+      const tab = await chrome.tabs.get(tabId).catch(() => null);
+      const windowId = tab?.windowId;
+      await chrome.tabs.remove(tabId);
+      await storageService.incrementTabsClosedCount();
+      if (windowId !== undefined) {
+        const remaining = await chrome.tabs.query({ windowId });
+        if (remaining.length === 0) {
+          await chrome.windows.remove(windowId).catch(() => {});
+        }
+      }
+    };
+
     try {
       switch (action) {
         case 'close-new-stay-current':
-          await chrome.tabs.remove(newTabId);
-          await storageService.incrementTabsClosedCount();
+          await closeTabAndMaybeWindow(newTabId);
           break;
 
         case 'close-old-stay-current': {
           const currentTabs = await chrome.tabs.query({ active: true, currentWindow: true });
           const currentTabId = currentTabs[0]?.id;
 
-          await chrome.tabs.remove(existingTabId);
-          await storageService.incrementTabsClosedCount();
+          await closeTabAndMaybeWindow(existingTabId);
 
           if (currentTabId === existingTabId && newTabId) {
             await chrome.tabs.update(newTabId, { active: true });
@@ -168,14 +183,19 @@ class TabDetectionService {
         }
 
         case 'close-new-switch-existing':
-          await chrome.tabs.remove(newTabId);
-          await storageService.incrementTabsClosedCount();
+          await closeTabAndMaybeWindow(newTabId);
+          if (existingTab.windowId !== undefined) {
+            await chrome.windows.update(existingTab.windowId, { focused: true }).catch(() => {});
+          }
           await chrome.tabs.update(existingTabId, { active: true });
           break;
 
         case 'close-old-switch-new':
-          await chrome.tabs.remove(existingTabId);
-          await storageService.incrementTabsClosedCount();
+          await closeTabAndMaybeWindow(existingTabId);
+          const newTab = await chrome.tabs.get(newTabId).catch(() => null);
+          if (newTab?.windowId !== undefined) {
+            await chrome.windows.update(newTab.windowId, { focused: true }).catch(() => {});
+          }
           await chrome.tabs.update(newTabId, { active: true });
           break;
 

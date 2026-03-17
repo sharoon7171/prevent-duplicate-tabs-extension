@@ -63,6 +63,7 @@ class StorageService {
         globalSettings: {
           duplicateAction: parsed.globalSettings?.duplicateAction ?? DEFAULT_SETTINGS.globalSettings.duplicateAction,
           ignoreParameters: parsed.globalSettings?.ignoreParameters ?? DEFAULT_SETTINGS.globalSettings.ignoreParameters,
+          duplicateScope: parsed.globalSettings?.duplicateScope ?? DEFAULT_SETTINGS.globalSettings.duplicateScope,
         },
         exceptions: parsed.exceptions ?? DEFAULT_SETTINGS.exceptions,
         domainExceptions: parsed.domainExceptions ?? DEFAULT_SETTINGS.domainExceptions,

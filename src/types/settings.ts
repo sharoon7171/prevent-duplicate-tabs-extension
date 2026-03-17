@@ -6,11 +6,14 @@ export type DuplicateAction =
   | 'close-new-switch-existing'
   | 'close-old-switch-new';
 
+export type DuplicateScope = 'all-windows' | 'current-window';
+
 export interface ExtensionSettings {
   enabled: boolean;
   globalSettings: {
     duplicateAction: DuplicateAction;
     ignoreParameters: boolean;
+    duplicateScope: DuplicateScope;
   };
   /** Page-level exceptions (exact URL); domainExceptions are whole-domain. */
   exceptions: string[];
@@ -23,6 +26,7 @@ export const DEFAULT_SETTINGS: ExtensionSettings = {
   globalSettings: {
     duplicateAction: 'close-new-stay-current',
     ignoreParameters: false,
+    duplicateScope: 'all-windows',
   },
   exceptions: [],
   domainExceptions: [],

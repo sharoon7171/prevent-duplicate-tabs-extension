@@ -46,8 +46,10 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
   const handleDuplicateActionChange = async (value: string): Promise<void> => {
     const action = value as DuplicateAction;
     setDuplicateActionState(action);
+    const current = await storageService.getSettings();
     await storageService.updateSettings({
       globalSettings: {
+        ...current.globalSettings,
         duplicateAction: action,
         ignoreParameters: ignoreParametersState,
       },
@@ -56,8 +58,10 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
 
   const handleIgnoreParametersChange = async (checked: boolean): Promise<void> => {
     setIgnoreParametersState(checked);
+    const current = await storageService.getSettings();
     await storageService.updateSettings({
       globalSettings: {
+        ...current.globalSettings,
         duplicateAction: duplicateActionState,
         ignoreParameters: checked,
       },
