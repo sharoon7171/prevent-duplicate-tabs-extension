@@ -237,7 +237,7 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
 
         <div className="flex flex-col flex-1 min-h-0">
           {filteredRules.length > 0 && (
-            <div className="space-y-2 overflow-y-auto max-h-[520px] pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
+            <div className="space-y-2 overflow-y-auto max-h-[520px] pr-2">
               {filteredRules.map(({ rule, originalIndex }) => {
                 const isExpanded = expandedRules.has(originalIndex);
                 const isEditingDomain = editingDomainIndex === originalIndex;

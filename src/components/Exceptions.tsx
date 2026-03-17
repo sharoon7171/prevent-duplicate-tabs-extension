@@ -170,7 +170,7 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
 
       <div className="flex flex-col flex-1 min-h-0">
         {filteredItems.length > 0 && (
-          <div className="space-y-2 overflow-y-auto max-h-[420px] pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>
+          <div className="space-y-2 overflow-y-auto max-h-[420px] pr-2">
             {filteredItems.map((item, index) => {
               const isEditing = editingIndex === index;
 
