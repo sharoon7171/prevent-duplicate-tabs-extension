@@ -1,13 +1,6 @@
 import React from 'react';
 import type { ToggleProps } from '@/types/components';
 
-/**
- * Professional reusable toggle component
- * Toggle switch UI with smooth transitions and accessibility
- *
- * @param props - Toggle component properties
- * @returns React.JSX.Element
- */
 export const Toggle: React.FC<ToggleProps> = ({
   label,
   checked = false,

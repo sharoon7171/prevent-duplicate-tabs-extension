@@ -7,13 +7,6 @@ interface LoadingProps {
   isPopup?: boolean;
 }
 
-/**
- * Loading component
- * Displays a loading spinner/skeleton UI matching the extension's design
- *
- * @param props - Loading component properties
- * @returns React.JSX.Element
- */
 export const Loading: React.FC<LoadingProps> = ({
   title = 'Prevent Duplicate Tabs',
   subtitle,
@@ -27,7 +20,6 @@ export const Loading: React.FC<LoadingProps> = ({
     <div className={containerClass}>
       <Header title={title} subtitle={subtitle || 'Loading settings...'} />
       <div className={isPopup ? 'px-3 py-3' : 'max-w-6xl mx-auto px-3 py-6 sm:px-4'}>
-        {/* Loading Spinner */}
         <div className="flex items-center justify-center py-12">
           <div className="relative">
             <div className="w-12 h-12 border-2 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
@@ -37,7 +29,6 @@ export const Loading: React.FC<LoadingProps> = ({
           </div>
         </div>
 
-        {/* Loading Text */}
         <div className="text-center">
           <p className="text-sm font-semibold text-gray-700 animate-pulse">
             Loading settings...

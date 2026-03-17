@@ -1,15 +1,9 @@
-/**
- * Component prop types
- * Centralized type definitions for reusable components
- */
-
 export interface HeaderProps {
   title: string;
   subtitle?: string;
   icon?: React.ReactNode;
   actions?: React.ReactNode;
   className?: string;
-  /** Compact stats shown in header: [active tabs count, prevented count] */
   stats?: { currentTabsCount: number; tabsClosedCount: number };
 }
 
@@ -74,13 +68,11 @@ export interface SiteSpecificRulesProps {
 export interface ExtensionStatusProps {
   enabled?: boolean;
   className?: string;
-  // Initial settings for loading state
   initialEnabled?: boolean;
 }
 
 export interface CurrentDomainSettingsProps {
   className?: string;
-  // Initial settings for loading state
   initialSettings?: import('@/types/settings').ExtensionSettings;
 }
 

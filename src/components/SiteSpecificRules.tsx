@@ -6,9 +6,6 @@ import { RadioGroup } from './RadioGroup';
 import { Input } from './Input';
 import { storageService } from '@/services/storage';
 
-/**
- * Duplicate action options for the radio group
- */
 const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-new-stay-current', label: 'Close new duplicate tab and stay on current tab' },
   { value: 'close-old-stay-current', label: 'Close old duplicate and stay on current tab' },
@@ -16,13 +13,6 @@ const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-old-switch-new', label: 'Close old duplicate and switch to new tab' },
 ] as const;
 
-/**
- * Modern site-specific rules component with improved layout
- * Allows configuring custom settings for specific domains
- * 
- * @param props - SiteSpecificRules component properties
- * @returns JSX.Element
- */
 export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
   rules: propRules,
   className = '',
@@ -50,7 +40,6 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
     setExpandedRules(newExpanded);
   };
 
-  // Filter rules based on search input
   const filteredRules = useMemo(() => {
     if (!searchValue.trim()) {
       return siteRules.map((rule, index) => ({ rule, originalIndex: index }));
@@ -62,14 +51,12 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
   }, [siteRules, searchValue]);
 
   useEffect(() => {
-    // Load initial settings if not provided
     if (initialSiteRules === undefined) {
       storageService.getSettings().then((settings) => {
         setSiteRules(settings.siteRules);
       });
     }
 
-    // Subscribe to storage changes
     const unsubscribe = storageService.subscribe((settings) => {
       setSiteRules(settings.siteRules);
     });
@@ -123,17 +110,13 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
 
   const handleDomainEditSave = async (index: number): Promise<void> => {
     if (editingDomainValue.trim()) {
-      // Normalize domain (trim and lowercase)
       const normalizedDomain = editingDomainValue.trim().toLowerCase();
-      
-      // Check if normalized domain already exists (and it's not the current rule being edited)
-      const isDuplicate = siteRules.some((rule, idx) => 
+      const isDuplicate = siteRules.some((rule, idx) =>
         idx !== index && rule.domain.toLowerCase() === normalizedDomain
       );
 
       if (!isDuplicate) {
         const updatedRules = [...siteRules];
-        // Update domain while preserving other rule settings
         const existingRule = updatedRules[index];
         if (existingRule) {
           updatedRules[index] = {
@@ -168,7 +151,6 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
         boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{
@@ -285,7 +267,6 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
           </div>
         )}
 
-        {/* Search Input */}
         {siteRules.length > 0 && (
           <div className="mb-3">
             <Input
@@ -296,7 +277,6 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
           </div>
         )}
 
-        {/* Scrollable Rules List */}
         <div className="flex flex-col flex-1 min-h-0">
           {filteredRules.length > 0 && (
             <div className="space-y-2 overflow-y-auto max-h-[520px] pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>

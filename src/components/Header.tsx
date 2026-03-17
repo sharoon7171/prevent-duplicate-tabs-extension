@@ -1,12 +1,6 @@
 import React from 'react';
 import type { HeaderProps } from '@/types/components';
 
-/**
- * Modern professional header component with bold typography
- *
- * @param props - Header component properties
- * @returns React.JSX.Element
- */
 export const Header: React.FC<HeaderProps> = ({
   title,
   subtitle,
@@ -15,7 +9,6 @@ export const Header: React.FC<HeaderProps> = ({
   stats,
   className = '',
 }: HeaderProps): React.JSX.Element => {
-  // Default icon if not provided - use Chrome extension API if available, otherwise use relative path
   const getIconSrc = (): string => {
     if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
       return chrome.runtime.getURL('icons/icon-48.png');
@@ -44,7 +37,6 @@ export const Header: React.FC<HeaderProps> = ({
         boxShadow: '0 4px 20px rgba(49, 130, 206, 0.2)',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0 h-0.75"
         style={{

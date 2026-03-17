@@ -2,130 +2,135 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve, join } from 'path';
 import { fileURLToPath } from 'url';
-import { copyFileSync, mkdirSync, existsSync, readdirSync } from 'fs';
+import { copyFileSync, mkdirSync, existsSync, readdirSync, renameSync, rmSync } from 'fs';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
-// Function to copy public directory recursively (excluding HTML files processed by Vite)
 const copyPublicDir = (): void => {
   const publicDir = resolve(__dirname, 'public');
   const distDir = resolve(__dirname, 'dist');
-  
+
   if (!existsSync(publicDir)) {
     return;
   }
-  
+
   if (!existsSync(distDir)) {
     mkdirSync(distDir, { recursive: true });
   }
-  
-  // Copy public directory, but HTML files will be processed by Vite as entry points
+
   const copyDir = (src: string, dest: string): void => {
     const entries = readdirSync(src, { withFileTypes: true });
-    
+
     for (const entry of entries) {
       const srcPath = join(src, entry.name);
-      const destPath = join(dest, entry.name);
-      
+
       if (entry.isDirectory()) {
-        if (!existsSync(destPath)) {
-          mkdirSync(destPath, { recursive: true });
+        if (entry.name === 'icons') {
+          const iconEntries = readdirSync(srcPath, { withFileTypes: true });
+          for (const icon of iconEntries) {
+            if (icon.isFile() && icon.name !== 'prevent-duplicate-tabs.png') {
+              copyFileSync(join(srcPath, icon.name), join(dest, icon.name));
+            }
+          }
+        } else {
+          const destPath = join(dest, entry.name);
+          if (!existsSync(destPath)) {
+            mkdirSync(destPath, { recursive: true });
+          }
+          copyDir(srcPath, destPath);
         }
-        copyDir(srcPath, destPath);
       } else if (!entry.name.endsWith('.html')) {
-        // Skip HTML files as they're processed by Vite
-        // Skip prevent-duplicate-tabs.png - keep in repo but exclude from build
-        if (entry.name === 'prevent-duplicate-tabs.png') {
-          return;
-        }
-        copyFileSync(srcPath, destPath);
+        copyFileSync(srcPath, join(dest, entry.name));
       }
     }
   };
-  
+
   copyDir(publicDir, distDir);
 };
 
-// Function to copy manifest.json
-const copyManifest = (): void => {
+const moveBuiltHtmlToDistRoot = (): void => {
   const distDir = resolve(__dirname, 'dist');
-  const manifestSrc = resolve(__dirname, 'manifest.json');
-  const manifestDest = resolve(distDir, 'manifest.json');
-  
-  if (!existsSync(manifestSrc)) {
-    return;
+  const publicInDist = join(distDir, 'public');
+  const popupSrc = join(publicInDist, 'popup.html');
+  const optionsSrc = join(publicInDist, 'options.html');
+  if (existsSync(popupSrc)) {
+    renameSync(popupSrc, join(distDir, 'popup.html'));
   }
-  
-  if (!existsSync(distDir)) {
-    mkdirSync(distDir, { recursive: true });
+  if (existsSync(optionsSrc)) {
+    renameSync(optionsSrc, join(distDir, 'options.html'));
   }
-  
-  copyFileSync(manifestSrc, manifestDest);
+  if (existsSync(publicInDist)) {
+    rmSync(publicInDist, { recursive: true });
+  }
 };
 
-// Plugin to copy manifest.json and public files, and watch for changes
 const copyAssetsPlugin = () => {
-  const manifestPath = resolve(__dirname, 'manifest.json');
   const publicDir = resolve(__dirname, 'public');
-  
+  const isBackgroundOnly = process.env.BUILD_BACKGROUND === '1';
+
   return {
     name: 'copy-assets',
     buildStart() {
-      // Copy on initial build
-      copyManifest();
-      copyPublicDir();
-      
-      // Add files to watch list for watch mode
-      this.addWatchFile(manifestPath);
       if (existsSync(publicDir)) {
         this.addWatchFile(publicDir);
       }
     },
     closeBundle() {
-      // Always copy after build completes (works in both build and watch modes)
-      copyManifest();
       copyPublicDir();
+      if (!isBackgroundOnly) {
+        moveBuiltHtmlToDistRoot();
+      }
     },
     watchChange(id: string) {
-      // Watch for changes in watch mode - copy immediately when files change
-      if (id === manifestPath) {
-        copyManifest();
-      } else if (id.startsWith(publicDir)) {
+      if (id.startsWith(publicDir)) {
         copyPublicDir();
       }
     },
   };
 };
 
+const sharedResolve = {
+  alias: { '@': resolve(__dirname, './src') },
+};
+
+const isBackgroundOnly = process.env.BUILD_BACKGROUND === '1';
+
 export default defineConfig({
-  plugins: [react(), copyAssetsPlugin()],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-    },
-  },
-  build: {
-    outDir: 'dist',
-    emptyOutDir: true,
-    // Enable minification in dev mode for code protection
-    // esbuild minifier is faster and automatically preserves Chrome APIs
-    minify: 'esbuild',
-    rollupOptions: {
-      input: {
-        // Service worker background script
-        background: resolve(__dirname, 'src/service-worker/index.ts'),
-        // Popup page - HTML entry that imports TSX
-        popup: resolve(__dirname, 'popup.html'),
-        // Options page - HTML entry that imports TSX
-        options: resolve(__dirname, 'options.html'),
+  plugins: [...(isBackgroundOnly ? [] : [react()]), copyAssetsPlugin()],
+  resolve: sharedResolve,
+  publicDir: false,
+  build: isBackgroundOnly
+    ? {
+        outDir: 'dist',
+        emptyOutDir: false,
+        minify: 'esbuild',
+        rollupOptions: {
+          input: {
+            background: resolve(__dirname, 'src/service-worker/index.ts'),
+          },
+          output: {
+            entryFileNames: '[name].js',
+            format: 'es',
+            inlineDynamicImports: true,
+          },
+        },
+      }
+    : {
+        outDir: 'dist',
+        emptyOutDir: true,
+        minify: 'esbuild',
+        rollupOptions: {
+          input: {
+            popup: resolve(__dirname, 'public/popup.html'),
+            options: resolve(__dirname, 'public/options.html'),
+          },
+          output: {
+            entryFileNames: '[name].js',
+            chunkFileNames: '[name].js',
+            assetFileNames: '[name][extname]',
+            format: 'es',
+          },
+        },
       },
-      output: {
-        entryFileNames: '[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name][extname]',
-        format: 'es',
-      },
-    },
-  },
 });
 

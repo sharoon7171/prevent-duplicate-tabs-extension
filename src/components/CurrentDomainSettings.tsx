@@ -6,9 +6,6 @@ import { storageService } from '@/services/storage';
 import type { ExtensionSettings, DuplicateAction } from '@/types/settings';
 import { normalizeException, isPageInExceptions, isDomainInExceptions } from '@/utils/urlNormalization';
 
-/**
- * Duplicate action options for the radio group
- */
 const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-new-stay-current', label: 'Close new duplicate tab and stay on current tab' },
   { value: 'close-old-stay-current', label: 'Close old duplicate and stay on current tab' },
@@ -16,15 +13,6 @@ const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-old-switch-new', label: 'Close old duplicate and switch to new tab' },
 ] as const;
 
-/**
- * Current domain settings component
- * Shows controls for the currently active tab's domain
- * Allows enabling/disabling exceptions for current page or domain
- * Shows site-specific rules configuration for current domain
- * 
- * @param props - CurrentDomainSettings component properties
- * @returns JSX.Element | null
- */
 export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
   initialSettings,
   className = '',
@@ -35,36 +23,30 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // Load initial settings if not provided
     if (initialSettings === undefined) {
       storageService.getSettings().then((loadedSettings) => {
         setSettings(loadedSettings);
       });
     }
 
-    // Subscribe to storage changes
     const unsubscribe = storageService.subscribe((updatedSettings) => {
       setSettings(updatedSettings);
     });
 
-    // Get current active tab
     chrome.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
       if (tabs[0]?.url) {
         try {
           const url = tabs[0].url;
           const urlObj = new URL(url);
-          
-          // Check if valid HTTP/HTTPS URL
+
           if (urlObj.protocol === 'http:' || urlObj.protocol === 'https:') {
             setCurrentUrl(url);
             setCurrentDomain(urlObj.hostname);
           } else {
-            // Invalid URL (chrome://, extension pages, etc.)
             setCurrentUrl(null);
             setCurrentDomain(null);
           }
         } catch (error) {
-          // Invalid URL format
           setCurrentUrl(null);
           setCurrentDomain(null);
         }
@@ -84,29 +66,21 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
     };
   }, [initialSettings]);
 
-  // Hide component if no valid URL/domain or still loading
   if (isLoading || !settings || !currentUrl || !currentDomain) {
     return null;
   }
 
-  // Check if current page (URL only) is in exceptions - exact match so root page ≠ whole domain
   const isPageInExceptionsList = currentUrl ? isPageInExceptions(currentUrl, settings.exceptions) : false;
-
-  // Check if current domain is in domain exceptions
   const isDomainInExceptionsList = currentDomain ? isDomainInExceptions(currentDomain, settings.domainExceptions) : false;
-
-  // Find site-specific rule for current domain
   const currentSiteRule = settings.siteRules.find((rule) => rule.domain === currentDomain);
   const hasSiteRule = currentSiteRule !== undefined;
 
-  // Get current values - use site-specific rule if exists, otherwise use global settings
   const currentDuplicateAction: DuplicateAction = currentSiteRule?.duplicateAction ?? settings.globalSettings.duplicateAction;
   const currentIgnoreParameters: boolean = currentSiteRule?.ignoreParameters ?? settings.globalSettings.ignoreParameters;
 
   const handleUrlExceptionToggle = async (checked: boolean): Promise<void> => {
     if (!settings || !currentUrl) return;
 
-    // Normalize exception to ensure it has protocol
     const normalizedUrl = normalizeException(currentUrl);
 
     const updatedExceptions = checked
@@ -137,19 +111,16 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
   const handleCreateOrUpdateSiteRule = async (updates: { duplicateAction?: DuplicateAction; ignoreParameters?: boolean }): Promise<void> => {
     if (!settings || !currentDomain) return;
 
-    // Get current values for the rule (use existing rule values or global settings as defaults)
     const existingRule = settings.siteRules.find((rule) => rule.domain === currentDomain);
     const currentDuplicateAction = existingRule?.duplicateAction ?? settings.globalSettings.duplicateAction;
     const currentIgnoreParameters = existingRule?.ignoreParameters ?? settings.globalSettings.ignoreParameters;
 
     if (existingRule) {
-      // Update existing rule
       const updatedRules = settings.siteRules.map((rule) =>
         rule.domain === currentDomain ? { ...rule, ...updates } : rule
       );
       await storageService.updateSettings({ siteRules: updatedRules });
     } else {
-      // Create new rule with current values merged with updates
       const newRule = {
         domain: currentDomain,
         duplicateAction: updates.duplicateAction ?? currentDuplicateAction,
@@ -174,7 +145,6 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
         boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{
@@ -200,7 +170,6 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
       </div>
 
       <div className="space-y-4 flex-1">
-        {/* Exceptions Section */}
         <div className="space-y-3">
           <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wide">
             Exceptions
@@ -229,7 +198,6 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
           </div>
         </div>
 
-        {/* Site-Specific Rules Section */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wide">

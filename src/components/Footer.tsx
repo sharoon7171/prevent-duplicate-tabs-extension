@@ -1,12 +1,6 @@
 import React from 'react';
 import type { FooterProps } from '@/types/components';
 
-/**
- * Footer component with developer attribution
- *
- * @param props - Footer component properties
- * @returns React.JSX.Element
- */
 export const Footer: React.FC<FooterProps> = ({
   className = '',
 }: FooterProps): React.JSX.Element => {
@@ -18,7 +12,6 @@ export const Footer: React.FC<FooterProps> = ({
         fontSize: '0.85rem',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{

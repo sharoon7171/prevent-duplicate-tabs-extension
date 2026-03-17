@@ -1,13 +1,6 @@
 import React from 'react';
 import type { RadioGroupProps } from '@/types/components';
 
-/**
- * Professional reusable radio group component
- * Displays options as styled cards matching the app's design language
- *
- * @param props - RadioGroup component properties
- * @returns React.JSX.Element
- */
 export const RadioGroup: React.FC<RadioGroupProps> = ({
   label,
   value,

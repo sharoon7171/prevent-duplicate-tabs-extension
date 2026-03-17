@@ -1,12 +1,6 @@
 import React from 'react';
 import type { InputProps } from '@/types/components';
 
-/**
- * Professional reusable input component
- *
- * @param props - Input component properties
- * @returns React.JSX.Element
- */
 export const Input: React.FC<InputProps> = ({
   label,
   placeholder = '',

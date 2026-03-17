@@ -4,8 +4,9 @@
   "description": "Prevent Duplicate Tabs Chrome Extension",
   "type": "module",
   "scripts": {
-    "build": "vite build",
+    "build": "vite build && BUILD_BACKGROUND=1 vite build",
     "dev": "vite build --watch --mode development",
+    "dev:background": "BUILD_BACKGROUND=1 vite build --watch --mode development",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

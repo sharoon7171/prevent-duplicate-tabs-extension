@@ -4,13 +4,6 @@ import { Input } from './Input';
 import { storageService } from '@/services/storage';
 import { normalizeException } from '@/utils/urlNormalization';
 
-/**
- * Modern exceptions component with improved layout and bold typography
- * Allows adding URLs/domains to ignore duplicate prevention
- *
- * @param props - Exceptions component properties
- * @returns JSX.Element
- */
 export const Exceptions: React.FC<ExceptionsProps> = ({
   items: propItems,
   className = '',
@@ -22,7 +15,6 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingValue, setEditingValue] = useState<string>('');
 
-  // Filter exceptions based on search input
   const filteredItems = useMemo(() => {
     if (!searchValue.trim()) {
       return exceptionItems;
@@ -34,14 +26,12 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
   }, [exceptionItems, searchValue]);
 
   useEffect(() => {
-    // Load initial settings if not provided
     if (initialExceptions === undefined) {
       storageService.getSettings().then((settings) => {
         setExceptionItems(settings.exceptions);
       });
     }
 
-    // Subscribe to storage changes
     const unsubscribe = storageService.subscribe((settings) => {
       setExceptionItems(settings.exceptions);
     });
@@ -53,10 +43,8 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
 
   const handleAdd = async (): Promise<void> => {
     if (inputValue.trim()) {
-      // Normalize exception by adding protocol if missing
       const normalizedException = normalizeException(inputValue.trim());
 
-      // Check if normalized exception already exists (accounting for potential duplicates)
       if (!exceptionItems.includes(normalizedException)) {
         const newItems = [...exceptionItems, normalizedException];
         setExceptionItems(newItems);
@@ -93,10 +81,7 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
 
   const handleEditSave = async (index: number, oldValue: string): Promise<void> => {
     if (editingValue.trim()) {
-      // Normalize exception by adding protocol if missing
       const normalizedException = normalizeException(editingValue.trim());
-
-      // Check if normalized exception already exists (and it's not the current item being edited)
       const currentItem = filteredItems[index];
       const isDuplicate = exceptionItems.some((item) =>
         item === normalizedException && item !== currentItem
@@ -134,7 +119,6 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
         boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{
@@ -192,7 +176,6 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
         </button>
       </div>
 
-      {/* Search Input */}
       {exceptionItems.length > 0 && (
         <div className="mb-3">
           <Input
@@ -203,7 +186,6 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
         </div>
       )}
 
-      {/* Fixed Height Scrollable List Container - Shows ~7 entries before scrolling */}
       <div className="flex flex-col flex-1 min-h-0">
         {filteredItems.length > 0 && (
           <div className="space-y-2 overflow-y-auto max-h-[420px] pr-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#cbd5e1 #f1f5f9' }}>

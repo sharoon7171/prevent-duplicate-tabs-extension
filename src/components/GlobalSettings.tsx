@@ -5,9 +5,6 @@ import { RadioGroup } from './RadioGroup';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
 
-/**
- * Duplicate action options for the radio group
- */
 const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-new-stay-current', label: 'Close new duplicate tab and stay on current tab' },
   { value: 'close-old-stay-current', label: 'Close old duplicate and stay on current tab' },
@@ -15,13 +12,6 @@ const DUPLICATE_ACTION_OPTIONS = [
   { value: 'close-old-switch-new', label: 'Close old duplicate and switch to new tab' },
 ] as const;
 
-/**
- * Modern global settings component with improved layout
- * Displays global extension settings with toggle switches
- *
- * @param props - GlobalSettings component properties
- * @returns React.JSX.Element
- */
 export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
   duplicateAction: propDuplicateAction,
   ignoreParameters: propIgnoreParameters,
@@ -36,7 +26,6 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
   );
 
   useEffect(() => {
-    // Load initial settings if not provided
     if (initialGlobalSettings === undefined) {
       storageService.getSettings().then((settings) => {
         setDuplicateActionState(settings.globalSettings.duplicateAction);
@@ -44,7 +33,6 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
       });
     }
 
-    // Subscribe to storage changes
     const unsubscribe = storageService.subscribe((settings) => {
       setDuplicateActionState(settings.globalSettings.duplicateAction);
       setIgnoreParametersState(settings.globalSettings.ignoreParameters);
@@ -84,7 +72,6 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
         boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{

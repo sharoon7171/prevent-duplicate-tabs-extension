@@ -1,8 +1,3 @@
-/**
- * Component exports
- * Centralized export point for all reusable components
- */
-
 export { Header } from './Header';
 export { Toggle } from './Toggle';
 export { ExtensionStatus } from './ExtensionStatus';

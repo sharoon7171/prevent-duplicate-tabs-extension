@@ -14,9 +14,6 @@ import type { ExtensionSettings } from '@/types/settings';
 import { getCurrentTabsCount } from '@/utils/statistics';
 import '../styles/main.css';
 
-/**
- * Modern popup component optimized for small screens
- */
 const Popup: React.FC = (): React.JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [settings, setSettings] = useState<ExtensionSettings | null>(null);
@@ -24,10 +21,8 @@ const Popup: React.FC = (): React.JSX.Element => {
   const [tabsClosedCount, setTabsClosedCount] = useState<number>(0);
 
   useEffect(() => {
-    // Initialize storage change listener to detect changes from service worker
     storageService.initializeChangeListener();
 
-    // Load settings once at component mount
     const loadData = async (): Promise<void> => {
       const [loadedSettings, statistics, tabsCount] = await Promise.all([
         storageService.getSettings(),
@@ -43,17 +38,14 @@ const Popup: React.FC = (): React.JSX.Element => {
 
     loadData();
 
-    // Subscribe to storage changes for real-time updates
     const unsubscribeSettings = storageService.subscribe((updatedSettings) => {
       setSettings(updatedSettings);
     });
 
-    // Subscribe to statistics changes for real-time updates
     const unsubscribeStatistics = storageService.subscribeStatistics((statistics) => {
       setTabsClosedCount(statistics.tabsClosedCount);
     });
 
-    // Listen for tab changes to update current tabs count
     const handleTabCreated = async (): Promise<void> => {
       const count = await getCurrentTabsCount();
       setCurrentTabsCount(count);
@@ -75,7 +67,6 @@ const Popup: React.FC = (): React.JSX.Element => {
     };
   }, []);
 
-  // Show loading state while settings are being loaded
   if (isLoading || !settings) {
     return <Loading title="Prevent Duplicate Tabs" subtitle="Extension settings" isPopup={true} />;
   }
@@ -89,13 +80,8 @@ const Popup: React.FC = (): React.JSX.Element => {
       />
       <main className="flex-1 overflow-y-auto">
       <div className="px-3 py-3 space-y-3">
-        {/* Extension Status */}
         <ExtensionStatus initialEnabled={settings.enabled} />
-        
-        {/* Current Domain Settings - on top when a domain is open */}
         <CurrentDomainSettings initialSettings={settings} />
-        
-        {/* Global Settings */}
         <GlobalSettings initialGlobalSettings={settings.globalSettings} />
       </div>
       </main>
@@ -104,7 +90,6 @@ const Popup: React.FC = (): React.JSX.Element => {
   );
 };
 
-// Initialize React app
 const container: HTMLElement | null = document.getElementById('root');
 if (container) {
   const root = createRoot(container);

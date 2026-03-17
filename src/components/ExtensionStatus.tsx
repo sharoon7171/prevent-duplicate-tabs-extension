@@ -3,13 +3,6 @@ import type { ExtensionStatusProps } from '@/types/components';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
 
-/**
- * Modern extension status component with prominent toggle
- * Displays toggle to enable/disable extension with card-based layout
- *
- * @param props - ExtensionStatus component properties
- * @returns React.JSX.Element
- */
 export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
   enabled: propEnabled,
   initialEnabled,
@@ -18,14 +11,12 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
   const [isEnabled, setIsEnabled] = useState<boolean>(initialEnabled ?? propEnabled ?? true);
 
   useEffect(() => {
-    // Load initial settings if not provided
     if (initialEnabled === undefined) {
       storageService.getSettings().then((settings) => {
         setIsEnabled(settings.enabled);
       });
     }
 
-    // Subscribe to storage changes
     const unsubscribe = storageService.subscribe((settings) => {
       setIsEnabled(settings.enabled);
     });
@@ -50,7 +41,6 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
         boxShadow: '0 2px 12px rgba(0, 0, 0, 0.06)',
       }}
     >
-      {/* Colorful accent stripe */}
       <div
         className="absolute top-0 left-0 right-0"
         style={{
