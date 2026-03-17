@@ -7,7 +7,9 @@
     "build": "vite build && BUILD_BACKGROUND=1 vite build",
     "build:zip": "bash scripts/build-zip.sh",
     "dev": "EMPTY_OUT_DIR=0 vite build --watch --mode development & BUILD_BACKGROUND=1 vite build --watch --mode development & wait",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "screenshot": "npm run build && npx playwright install chromium && node scripts/screenshot-options.mjs",
+    "screenshot:popup": "node scripts/screenshot-popup-mockup.mjs"
   },
   "dependencies": {
     "react": "^19.2.4",
@@ -24,6 +26,7 @@
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "playwright": "^1.49.0"
   }
 }
