@@ -10,13 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: "npm"
 
       - name: Install dependencies
@@ -34,10 +36,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          TAG="v${VERSION}"
           ZIP="build/prevent-duplicate-tabs-${VERSION}.zip"
-          if gh release view "$TAG" &>/dev/null; then
-            gh release upload "$TAG" "$ZIP" --clobber
-          else
-            gh release create "$TAG" "$ZIP" --title "$TAG" --generate-notes
-          fi
+          gh release delete "latest" --yes 2>/dev/null || true
+          gh release create "latest" "$ZIP" --title "v${VERSION}" --notes "Chrome extension that prevents opening duplicate tabs. Install the attached .zip in Chrome (chrome://extensions → Load unpacked, or drag the zip)."
