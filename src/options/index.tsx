@@ -10,6 +10,7 @@ import {
   SiteSpecificRules,
   Loading,
   Footer,
+  ReviewPrompt,
 } from '@/components';
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings } from '@/types/settings';
@@ -82,11 +83,16 @@ const Options: React.FC = (): React.JSX.Element => {
       />
       <main className="flex-1">
       <div className="max-w-6xl mx-auto px-3 py-5 sm:px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5 lg:items-stretch">
+        <ReviewPrompt
+          variant="options"
+          enabled={settings.enabled}
+          tabsClosedCount={tabsClosedCount}
+        />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5 lg:items-stretch mt-4">
           <div className="flex flex-col space-y-4 lg:h-full">
             <CurrentDomainSettings initialSettings={settings} />
             <ExtensionStatus initialEnabled={settings.enabled} />
-            <div className="flex-1">
+            <div className="flex-1 min-h-0">
               <GlobalSettings initialGlobalSettings={settings.globalSettings} />
             </div>
           </div>

@@ -1,17 +1,21 @@
-/** Sync storage for settings and statistics; used by popup, options, and service worker. */
-
 import type { ExtensionSettings, StatisticsData } from '@/types/settings';
 import { DEFAULT_SETTINGS, SETTINGS_STORAGE_KEY, DEFAULT_STATISTICS, STATISTICS_STORAGE_KEY } from '@/types/settings';
+import type { ReviewPromptState } from '@/types/reviewPrompt';
+import {
+  DEFAULT_REVIEW_PROMPT_STATE,
+  REVIEW_PROMPT_STORAGE_KEY,
+} from '@/types/reviewPrompt';
 
 type StorageListener = (settings: ExtensionSettings) => void;
 type StatisticsListener = (statistics: StatisticsData) => void;
+type ReviewPromptListener = (state: ReviewPromptState) => void;
 
 class StorageService {
   private listeners: Set<StorageListener> = new Set();
   private statisticsListeners: Set<StatisticsListener> = new Set();
+  private reviewPromptListeners: Set<ReviewPromptListener> = new Set();
   private changeListenerInitialized: boolean = false;
 
-  /** Returns settings: no stored value (e.g. first install) or missing fields use defaults; otherwise user values. */
   async getSettings(): Promise<ExtensionSettings> {
     try {
       const result = await chrome.storage.sync.get(SETTINGS_STORAGE_KEY);
@@ -76,7 +80,6 @@ class StorageService {
     }
   }
 
-  /** Keeps UI in sync when settings change in another tab or device. */
   initializeChangeListener(): void {
     if (this.changeListenerInitialized) {
       return;
@@ -91,6 +94,12 @@ class StorageService {
       if (changes[STATISTICS_STORAGE_KEY]) {
         const newValue = changes[STATISTICS_STORAGE_KEY].newValue;
         if (typeof newValue === 'string') this.notifyStatisticsListeners(this.parseStatistics(newValue));
+      }
+      if (changes[REVIEW_PROMPT_STORAGE_KEY]) {
+        const newValue = changes[REVIEW_PROMPT_STORAGE_KEY].newValue;
+        if (typeof newValue === 'string') {
+          this.notifyReviewPromptListeners(this.parseReviewPrompt(newValue));
+        }
       }
     });
 
@@ -152,6 +161,104 @@ class StorageService {
     } catch (error) {
       console.error('Error parsing statistics:', error);
       return { ...DEFAULT_STATISTICS };
+    }
+  }
+
+  async getReviewPromptState(): Promise<ReviewPromptState> {
+    try {
+      const result = await chrome.storage.sync.get(REVIEW_PROMPT_STORAGE_KEY);
+      const stored = result[REVIEW_PROMPT_STORAGE_KEY];
+      let parsed: ReviewPromptState =
+        typeof stored === 'string'
+          ? this.parseReviewPrompt(stored)
+          : { ...DEFAULT_REVIEW_PROMPT_STATE };
+      if (parsed.firstSeenAt === 0) {
+        parsed = { ...parsed, firstSeenAt: Date.now() };
+        await chrome.storage.sync.set({
+          [REVIEW_PROMPT_STORAGE_KEY]: JSON.stringify(parsed),
+        });
+        this.notifyReviewPromptListeners(parsed);
+      }
+      return parsed;
+    } catch (error) {
+      console.error('Error reading review prompt state:', error);
+      return { ...DEFAULT_REVIEW_PROMPT_STATE, firstSeenAt: Date.now() };
+    }
+  }
+
+  async dismissReviewPrompt(): Promise<ReviewPromptState> {
+    try {
+      const current = await this.getReviewPromptState();
+      const updated: ReviewPromptState = {
+        ...current,
+        dismissed: true,
+        snoozeUntil: null,
+      };
+      await chrome.storage.sync.set({
+        [REVIEW_PROMPT_STORAGE_KEY]: JSON.stringify(updated),
+      });
+      this.notifyReviewPromptListeners(updated);
+      return updated;
+    } catch (error) {
+      console.error('Error dismissing review prompt:', error);
+      throw error;
+    }
+  }
+
+  async snoozeReviewPromptUntil(snoozeUntil: number): Promise<ReviewPromptState> {
+    try {
+      const current = await this.getReviewPromptState();
+      const updated: ReviewPromptState = { ...current, snoozeUntil };
+      await chrome.storage.sync.set({
+        [REVIEW_PROMPT_STORAGE_KEY]: JSON.stringify(updated),
+      });
+      this.notifyReviewPromptListeners(updated);
+      return updated;
+    } catch (error) {
+      console.error('Error snoozing review prompt:', error);
+      throw error;
+    }
+  }
+
+  subscribeReviewPrompt(listener: ReviewPromptListener): () => void {
+    this.reviewPromptListeners.add(listener);
+    return (): void => {
+      this.reviewPromptListeners.delete(listener);
+    };
+  }
+
+  private notifyReviewPromptListeners(state: ReviewPromptState): void {
+    this.reviewPromptListeners.forEach((listener) => {
+      try {
+        listener(state);
+      } catch (error) {
+        console.error('Error notifying review prompt listener:', error);
+      }
+    });
+  }
+
+  private parseReviewPrompt(stored: string): ReviewPromptState {
+    try {
+      const parsed = JSON.parse(stored) as Record<string, unknown>;
+      const firstSeenAt =
+        typeof parsed.firstSeenAt === 'number'
+          ? parsed.firstSeenAt
+          : DEFAULT_REVIEW_PROMPT_STATE.firstSeenAt;
+      let dismissed = false;
+      if (typeof parsed.dismissed === 'boolean') {
+        dismissed = parsed.dismissed;
+      } else if (
+        parsed.permanentlyDismissed === true ||
+        parsed.markedReviewed === true
+      ) {
+        dismissed = true;
+      }
+      const snoozeUntil =
+        typeof parsed.snoozeUntil === 'number' ? parsed.snoozeUntil : null;
+      return { firstSeenAt, dismissed, snoozeUntil };
+    } catch (error) {
+      console.error('Error parsing review prompt state:', error);
+      return { ...DEFAULT_REVIEW_PROMPT_STATE };
     }
   }
 }

@@ -8,6 +8,7 @@ import {
   CurrentDomainSettings,
   Loading,
   Footer,
+  ReviewPrompt,
 } from '@/components';
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings } from '@/types/settings';
@@ -78,14 +79,19 @@ const Popup: React.FC = (): React.JSX.Element => {
         subtitle="Extension settings"
         stats={{ currentTabsCount, tabsClosedCount }}
       />
-      <main className="flex-1 overflow-y-auto">
-      <div className="px-3 py-3 space-y-3">
-        <ExtensionStatus initialEnabled={settings.enabled} />
-        <CurrentDomainSettings initialSettings={settings} />
-        <GlobalSettings initialGlobalSettings={settings.globalSettings} />
-      </div>
+      <main className="flex-1 overflow-y-auto min-h-0 flex flex-col">
+        <div className="px-3 py-3 space-y-3 flex-1 min-h-0">
+          <ReviewPrompt
+            variant="popup"
+            enabled={settings.enabled}
+            tabsClosedCount={tabsClosedCount}
+          />
+          <ExtensionStatus initialEnabled={settings.enabled} />
+          <CurrentDomainSettings initialSettings={settings} />
+          <GlobalSettings initialGlobalSettings={settings.globalSettings} />
+        </div>
       </main>
-      <Footer />
+      <Footer variant="popup" />
     </div>
   );
 };

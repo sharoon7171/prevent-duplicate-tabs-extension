@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
+import type { DuplicateScope } from '@/types/settings';
 
 interface ExtensionStatusProps {
   enabled?: boolean;

@@ -10,4 +10,5 @@ export { Loading } from './Loading';
 export { CurrentDomainSettings } from './CurrentDomainSettings';
 export { Footer } from './Footer';
 export { Button } from './Button';
+export { ReviewPrompt } from './ReviewPrompt';
 
