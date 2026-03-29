@@ -1,5 +1,3 @@
-/** URL comparison and normalization for duplicate tab detection. */
-
 function normalizePathname(pathname: string): string {
   if (pathname === '/' || pathname === '') {
     return '/';
@@ -66,7 +64,6 @@ export function extractDomain(url: string | undefined): string | null {
   }
 }
 
-/** Exact URL match only; used for "Allow this page" so root URL ≠ whole domain. */
 export function isPageInExceptions(url: string | undefined, exceptions: string[]): boolean {
   if (!url || exceptions.length === 0) {
     return false;
@@ -100,7 +97,6 @@ export function isDomainInExceptions(domain: string | null, domainExceptions: st
   });
 }
 
-/** True if URL is in page exceptions (exact) or its domain is in domain exceptions; used by tab detection. */
 export function isUrlAllowedForDuplicateCheck(
   url: string | undefined,
   exceptions: string[],
@@ -110,49 +106,3 @@ export function isUrlAllowedForDuplicateCheck(
   const domain = extractDomain(url);
   return isPageInExceptions(url, exceptions) || isDomainInExceptions(domain, domainExceptions);
 }
-
-/** Legacy: both exact URL and domain match for backward compatibility. */
-export function isUrlInExceptions(url: string | undefined, exceptions: string[]): boolean {
-  if (!url || exceptions.length === 0) {
-    return false;
-  }
-
-  const normalizedUrl = normalizeUrl(url, false);
-  const domain = extractDomain(url);
-
-  if (!normalizedUrl && !domain) {
-    return false;
-  }
-
-  return exceptions.some((exception) => {
-    const normalizedException = normalizeException(exception);
-
-    try {
-      const exceptionNormalizedUrl = normalizeUrl(normalizedException, false);
-      if (normalizedUrl && exceptionNormalizedUrl === normalizedUrl) {
-        return true;
-      }
-    } catch {
-      if (normalizedUrl && normalizedException === normalizedUrl) {
-        return true;
-      }
-    }
-
-    try {
-      const exceptionUrlObj = new URL(normalizedException);
-      const exceptionDomain = exceptionUrlObj.hostname;
-      const exceptionPath = normalizePathname(exceptionUrlObj.pathname);
-
-      if (domain && exceptionDomain === domain && exceptionPath === '/') {
-        return true;
-      }
-    } catch {
-      if (domain && normalizedException === domain) {
-        return true;
-      }
-    }
-
-    return false;
-  });
-}
-

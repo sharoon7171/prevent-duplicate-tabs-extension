@@ -30,8 +30,7 @@
       "@/types/*": ["src/types/*"],
       "@/constants/*": ["src/constants/*"],
       "@/utils/*": ["src/utils/*"],
-      "@/components/*": ["src/components/*"],
-      "@/config/*": ["src/config/*"]
+      "@/components/*": ["src/components/*"]
     },
     "types": ["chrome", "node", "vite/client"]
   },
