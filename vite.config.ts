@@ -104,22 +104,20 @@ export default defineConfig({
     ? {
         outDir: 'dist',
         emptyOutDir: false,
-        minify: 'esbuild',
-        rollupOptions: {
+        rolldownOptions: {
           input: {
             background: resolve(__dirname, 'src/service-worker/index.ts'),
           },
           output: {
+            codeSplitting: false,
             entryFileNames: '[name].js',
             format: 'es',
-            inlineDynamicImports: true,
           },
         },
       }
     : {
         outDir: 'dist',
         emptyOutDir: !preserveOutput,
-        minify: 'esbuild',
         rollupOptions: {
           input: {
             popup: resolve(__dirname, 'public/popup.html'),

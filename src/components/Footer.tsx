@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CHROME_WEB_STORE_REVIEWS_URL } from '@/constants/chromeWebStore';
+import { gradientBarClass } from '@/ui-classes/gradient-bar';
 import { NEW_ISSUE_URL } from '@/constants/repo';
 
 interface FooterProps {
@@ -73,9 +74,9 @@ export const Footer: React.FC<FooterProps> = ({
 
   return (
     <footer
-      className={`w-full border-t border-gray-200 mt-auto relative overflow-hidden bg-linear-to-br from-slate-50 to-slate-200 ${className}`}
+      className={`w-full shrink-0 border-t border-gray-200 mt-auto relative overflow-hidden bg-linear-to-br from-slate-50 to-slate-200 ${className}`}
     >
-      <div className="gradient-bar" />
+      <div className={gradientBarClass} />
       <div className="max-w-6xl mx-auto px-3 py-2 sm:px-4 flex flex-col items-center gap-2 text-xs sm:text-sm text-gray-500">
         <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1">
           <a

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
+import { gradientBarClass } from '@/ui-classes/gradient-bar';
 import type { DuplicateScope } from '@/types/settings';
 
 interface ExtensionStatusProps {
@@ -54,7 +55,7 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
     <div
       className={`relative overflow-hidden rounded-xl border shadow-card p-3 sm:p-4 transition-all duration-300 flex flex-col hover:shadow-lg bg-linear-to-br from-white to-slate-50 ${isEnabled ? 'border-emerald-200' : 'border-gray-200'} ${className}`}
     >
-      <div className="gradient-bar rounded-t-xl" />
+      <div className={`${gradientBarClass} rounded-t-xl`} />
       <div className="flex items-center justify-between flex-1">
         <div className="flex-1">
           <h3 className="text-base font-black text-black mb-0.5">

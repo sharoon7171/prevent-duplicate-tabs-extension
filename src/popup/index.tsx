@@ -13,7 +13,8 @@ import {
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings } from '@/types/settings';
 import { getCurrentTabsCount } from '@/utils/statistics';
-import '../styles/main.css';
+import '../styles/register-poppins';
+import '../styles/index.css';
 
 const Popup: React.FC = (): React.JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -73,7 +74,7 @@ const Popup: React.FC = (): React.JSX.Element => {
   }
 
   return (
-    <div className="min-w-[480px] max-w-[520px] flex flex-col bg-slate-50">
+    <div className="h-full min-h-0 min-w-[480px] max-w-[520px] flex flex-col overflow-hidden bg-slate-50">
       <Header 
         title="Prevent Duplicate Tabs"
         subtitle="Extension settings"

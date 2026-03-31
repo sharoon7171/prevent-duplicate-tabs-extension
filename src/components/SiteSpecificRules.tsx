@@ -5,6 +5,7 @@ import { RadioGroup } from './RadioGroup';
 import { Input } from './Input';
 import { Button } from './Button';
 import { storageService } from '@/services/storage';
+import { gradientBarClass } from '@/ui-classes/gradient-bar';
 
 interface SiteSpecificRulesProps {
   rules?: SiteRule[];
@@ -153,7 +154,7 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
     <div 
       className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-card p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-linear-to-br from-white to-slate-50 ${className}`}
     >
-      <div className="gradient-bar rounded-t-xl" />
+      <div className={`${gradientBarClass} rounded-t-xl`} />
       <div className="flex items-center gap-2 mb-3">
         <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border-2 border-blue-200">
           <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">

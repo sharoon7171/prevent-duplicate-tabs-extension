@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/Button';
 import { CHROME_WEB_STORE_REVIEWS_URL } from '@/constants/chromeWebStore';
 import { storageService } from '@/services/storage';
+import { gradientBarClass } from '@/ui-classes/gradient-bar';
 import { type ReviewPromptState } from '@/types/reviewPrompt';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -128,7 +129,7 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
 
   return (
     <div className={shell} role="region" aria-labelledby="review-prompt-heading">
-      <div className="gradient-bar rounded-t-xl" />
+      <div className={`${gradientBarClass} rounded-t-xl`} />
       <div className="mb-4">
         <h2
           id="review-prompt-heading"

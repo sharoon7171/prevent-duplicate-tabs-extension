@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { gradientBarClass } from '@/ui-classes/gradient-bar';
+
 interface HeaderProps {
   title: string;
   subtitle?: string;
@@ -36,9 +38,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className={`w-full text-white shadow-header relative overflow-hidden transition-all duration-300 hover:shadow-xl bg-linear-to-br from-brand to-brand-dark ${className}`}
+      className={`w-full shrink-0 text-white shadow-header relative overflow-hidden transition-all duration-300 hover:shadow-xl bg-linear-to-br from-brand to-brand-dark ${className}`}
     >
-      <div className="gradient-bar rounded-t-2xl" />
+      <div className={`${gradientBarClass} rounded-t-2xl`} />
       <div className="max-w-6xl mx-auto px-3 py-3 sm:px-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-3 min-w-0">
