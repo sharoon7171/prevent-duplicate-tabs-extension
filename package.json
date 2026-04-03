@@ -9,6 +9,7 @@
     "dev": "EMPTY_OUT_DIR=0 vite build --watch --mode development & BUILD_BACKGROUND=1 vite build --watch --mode development & wait",
     "type-check": "tsc --noEmit",
     "screenshot": "npm run build && npx playwright install chromium && node scripts/screenshot-options.mjs",
+    "screenshot:options": "node scripts/screenshot-options.mjs",
     "screenshot:popup": "node scripts/screenshot-popup-mockup.mjs"
   },
   "dependencies": {
