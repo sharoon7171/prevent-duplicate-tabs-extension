@@ -6,7 +6,7 @@ import fs from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const VIEWPORT = { width: 1280, height: 800 };
-const POPUP_SIZE = { width: 520, height: 700 };
+const POPUP_SIZE = { width: 800, height: 600 };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -168,7 +168,7 @@ function writeMockupHtml() {
       <path fill="none" stroke="#6366f1" stroke-width="1" stroke-dasharray="6 14" opacity="0.15" d="M640 40 L640 760"/>
     </svg>
     <div class="popup-wrap">
-      <img src="${popupImg}" width="520" alt="Extension popup">
+      <img src="${popupImg}" width="800" alt="Extension popup">
     </div>
     <p class="tagline">Settings at a glance — one click from the toolbar</p>
   </div>

@@ -54,6 +54,13 @@ async function injectDemoStorage(page) {
         extensionSettings: JSON.stringify(settings),
         extensionStatistics: JSON.stringify(stats),
       });
+      await chrome.storage.local.set({
+        extensionReviewPrompt: JSON.stringify({
+          firstSeenAt: Date.now() - 8 * 24 * 60 * 60 * 1000,
+          dismissed: false,
+          snoozeUntil: null,
+        }),
+      });
     },
     { settings: DEMO_SETTINGS, stats: DEMO_STATS }
   );

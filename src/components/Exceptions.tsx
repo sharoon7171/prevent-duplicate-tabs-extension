@@ -120,32 +120,32 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-card p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-linear-to-br from-white to-slate-50 ${className}`}
+      className={`relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-linear-to-br from-white to-slate-50 p-2.5 shadow-card transition-all duration-300 hover:border-gray-300 hover:shadow-lg sm:p-3 ${className}`}
     >
       <div className={`${gradientBarClass} rounded-t-xl`} />
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border-2 border-amber-200">
-          <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="mb-2 flex items-center gap-2">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-amber-200 bg-white shadow-md">
+          <svg className="h-4 w-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
           </svg>
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-black text-black">
+            <h2 className="text-lg font-black leading-tight text-black sm:text-xl">
               Exceptions
             </h2>
             {exceptionItems.length > 0 && (
-              <span className="px-3 py-1 bg-linear-to-r from-amber-600 to-orange-600 text-white text-xs font-bold rounded-full shadow-md">
+              <span className="rounded-full bg-linear-to-r from-amber-600 to-orange-600 px-2.5 py-0.5 text-xs font-extrabold text-white shadow-md sm:text-sm">
                 {exceptionItems.length}
               </span>
             )}
           </div>
-          <p className="text-xs font-semibold text-gray-600 mt-0.5">
+          <p className="mt-0.5 text-sm font-semibold leading-snug text-gray-600">
             Allow duplicates for specific URLs or domains
           </p>
         </div>
       </div>
-      <div className="flex flex-col sm:flex-row gap-2 mb-4">
+      <div className="mb-2 flex flex-col gap-2 sm:flex-row">
         <div className="flex-1">
           <Input
             placeholder="example.com or example.com/page"
@@ -160,7 +160,7 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
       </div>
 
       {exceptionItems.length > 0 && (
-        <div className="mb-3">
+        <div className="mb-2">
           <Input
             placeholder="Search exceptions..."
             value={searchValue}
@@ -169,7 +169,7 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
         </div>
       )}
 
-      <div className="flex flex-col flex-1 min-h-0">
+      <div className="flex flex-col">
         {filteredItems.length > 0 && (
           <div className="space-y-2 overflow-y-auto max-h-[420px] pr-2">
             {filteredItems.map((item, index) => {
@@ -178,7 +178,7 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
               return (
                 <div
                   key={`${item}-${index}`}
-                  className="flex items-center justify-between bg-linear-to-r from-amber-50 to-orange-50 px-4 py-3 rounded-xl border-2 border-amber-200 shrink-0 gap-2"
+                  className="flex shrink-0 items-center justify-between gap-2 rounded-xl border-2 border-amber-200 bg-linear-to-r from-amber-50 to-orange-50 px-3 py-2"
                 >
                   {isEditing ? (
                     <>
@@ -215,7 +215,7 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
                   ) : (
                     <>
                       <span
-                        className="text-sm font-semibold text-gray-800 flex-1 min-w-0 break-all mr-3"
+                        className="mr-3 flex-1 min-w-0 break-all text-sm font-bold text-gray-900 sm:text-base"
                         title={item}
                         style={{ wordBreak: 'break-all' }}
                       >
@@ -253,26 +253,26 @@ export const Exceptions: React.FC<ExceptionsProps> = ({
         )}
 
         {exceptionItems.length === 0 && (
-          <div className="text-center py-8 flex flex-col justify-center flex-1">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex flex-1 flex-col justify-center py-6 text-center">
+            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
+                <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-gray-600">
+            <p className="text-sm font-semibold text-gray-600 sm:text-base">
               No exceptions added yet
             </p>
           </div>
         )}
 
         {exceptionItems.length > 0 && filteredItems.length === 0 && (
-          <div className="text-center py-8 flex flex-col justify-center flex-1">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex flex-1 flex-col justify-center py-6 text-center">
+            <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
+                <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
-            <p className="text-sm font-medium text-gray-600">
+            <p className="text-sm font-semibold text-gray-600 sm:text-base">
               No exceptions match your search
             </p>
           </div>

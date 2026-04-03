@@ -145,57 +145,55 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
 
   return (
     <div 
-      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-card p-3 sm:p-4 h-full flex flex-col transition-all duration-300 hover:shadow-lg hover:border-gray-300 bg-linear-to-br from-white to-slate-50 ${className}`}
+      className={`relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-linear-to-br from-white to-slate-50 p-2.5 shadow-card transition-all duration-300 hover:border-gray-300 hover:shadow-lg sm:p-3 ${className}`}
     >
       <div className={`${gradientBarClass} rounded-t-xl`} />
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-md border-2 border-blue-200">
-          <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="mb-2 flex items-center gap-2">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-blue-200 bg-white shadow-md">
+          <svg className="h-4 w-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-black text-black">
+          <h2 className="text-lg font-black leading-tight text-black sm:text-xl">
             Current Domain
           </h2>
-          <p className="text-xs font-semibold text-gray-600 mt-0.5 truncate" title={currentUrl}>
+          <p className="mt-0.5 truncate text-sm font-semibold text-gray-600" title={currentUrl}>
             {currentDomain}
           </p>
         </div>
       </div>
 
-      <div className="space-y-4 flex-1">
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wide">
+      <div className="space-y-2">
+        <div className="space-y-2">
+          <h3 className="text-[11px] font-extrabold uppercase tracking-wider text-gray-700 sm:text-xs">
             Exceptions
           </h3>
-          <div className="p-3 bg-linear-to-r from-amber-50 to-orange-50 rounded-lg border-2 border-amber-200">
+          <div className="rounded-lg border-2 border-amber-200 bg-linear-to-r from-amber-50 to-orange-50">
             <Toggle
               label="Allow duplicates for this page"
+              description="Allow duplicate tabs for this specific page"
               checked={isPageInExceptionsList}
               onChange={handleUrlExceptionToggle}
-              className="mb-1"
+              interactiveRow
+              className="w-full p-2.5"
             />
-            <p className="text-xs font-medium text-gray-700 ml-0">
-              Allow duplicate tabs for this specific page
-            </p>
           </div>
-          <div className="p-3 bg-linear-to-r from-amber-50 to-orange-50 rounded-lg border-2 border-amber-200">
+          <div className="rounded-lg border-2 border-amber-200 bg-linear-to-r from-amber-50 to-orange-50">
             <Toggle
               label="Allow duplicates for this domain"
+              description={`Allow duplicate tabs for all pages on ${currentDomain}`}
               checked={isDomainInExceptionsList}
               onChange={handleDomainExceptionToggle}
-              className="mb-1"
+              interactiveRow
+              className="w-full p-2.5"
             />
-            <p className="text-xs font-medium text-gray-700 ml-0">
-              Allow duplicate tabs for all pages on {currentDomain}
-            </p>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-gray-800 uppercase tracking-wide">
+            <h3 className="text-[11px] font-extrabold uppercase tracking-wider text-gray-700 sm:text-xs">
               Site-Specific Rules
             </h3>
             {hasSiteRule && (
@@ -206,8 +204,8 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
           </div>
           
           
-          <div className="space-y-2">
-            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <div className="space-y-1.5">
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-2.5">
               <RadioGroup
                 label="When duplicate tab detected"
                 value={currentDuplicateAction}
@@ -218,24 +216,23 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
                   });
                 }}
               />
-              <p className="text-xs font-medium text-gray-700 ml-0 mt-2">
+              <p className="ml-0 mt-1.5 text-sm font-medium leading-snug text-gray-600">
                 Choose how to handle duplicate tabs for this domain
               </p>
             </div>
-            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="rounded-lg border border-gray-200 bg-gray-50">
               <Toggle
                 label="Ignore URL parameters"
+                description="Match URLs without query parameters (?id=123, etc.)"
                 checked={currentIgnoreParameters}
                 onChange={(checked): void => {
                   handleCreateOrUpdateSiteRule({ ignoreParameters: checked }).catch((error) => {
                     console.error('Error updating site rule:', error);
                   });
                 }}
-                className="mb-1"
+                interactiveRow
+                className="w-full p-2.5"
               />
-              <p className="text-xs font-medium text-gray-700 ml-0">
-                Match URLs without query parameters (?id=123, etc.)
-              </p>
             </div>
           </div>
         </div>

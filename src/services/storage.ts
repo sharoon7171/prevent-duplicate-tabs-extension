@@ -86,7 +86,15 @@ class StorageService {
     }
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName !== 'sync') return;
+      if (areaName === 'local' && changes[REVIEW_PROMPT_STORAGE_KEY]) {
+        const newValue = changes[REVIEW_PROMPT_STORAGE_KEY].newValue;
+        if (typeof newValue === 'string') {
+          this.notifyReviewPromptListeners(this.parseReviewPrompt(newValue));
+        }
+      }
+      if (areaName !== 'sync') {
+        return;
+      }
       if (changes[SETTINGS_STORAGE_KEY]) {
         const newValue = changes[SETTINGS_STORAGE_KEY].newValue;
         if (typeof newValue === 'string') this.notifyListeners(this.parseSettings(newValue));
@@ -94,12 +102,6 @@ class StorageService {
       if (changes[STATISTICS_STORAGE_KEY]) {
         const newValue = changes[STATISTICS_STORAGE_KEY].newValue;
         if (typeof newValue === 'string') this.notifyStatisticsListeners(this.parseStatistics(newValue));
-      }
-      if (changes[REVIEW_PROMPT_STORAGE_KEY]) {
-        const newValue = changes[REVIEW_PROMPT_STORAGE_KEY].newValue;
-        if (typeof newValue === 'string') {
-          this.notifyReviewPromptListeners(this.parseReviewPrompt(newValue));
-        }
       }
     });
 
@@ -166,15 +168,27 @@ class StorageService {
 
   async getReviewPromptState(): Promise<ReviewPromptState> {
     try {
-      const result = await chrome.storage.sync.get(REVIEW_PROMPT_STORAGE_KEY);
-      const stored = result[REVIEW_PROMPT_STORAGE_KEY];
+      const localResult = await chrome.storage.local.get(REVIEW_PROMPT_STORAGE_KEY);
+      const rawLocal = localResult[REVIEW_PROMPT_STORAGE_KEY];
+      let stored: string | undefined = typeof rawLocal === 'string' ? rawLocal : undefined;
+      if (stored === undefined) {
+        const syncResult = await chrome.storage.sync.get(REVIEW_PROMPT_STORAGE_KEY);
+        const rawSync = syncResult[REVIEW_PROMPT_STORAGE_KEY];
+        if (typeof rawSync === 'string') {
+          stored = rawSync;
+          await chrome.storage.local.set({
+            [REVIEW_PROMPT_STORAGE_KEY]: rawSync,
+          });
+          await chrome.storage.sync.remove(REVIEW_PROMPT_STORAGE_KEY);
+        }
+      }
       let parsed: ReviewPromptState =
         typeof stored === 'string'
           ? this.parseReviewPrompt(stored)
           : { ...DEFAULT_REVIEW_PROMPT_STATE };
       if (parsed.firstSeenAt === 0) {
         parsed = { ...parsed, firstSeenAt: Date.now() };
-        await chrome.storage.sync.set({
+        await chrome.storage.local.set({
           [REVIEW_PROMPT_STORAGE_KEY]: JSON.stringify(parsed),
         });
         this.notifyReviewPromptListeners(parsed);
@@ -194,7 +208,7 @@ class StorageService {
         dismissed: true,
         snoozeUntil: null,
       };
-      await chrome.storage.sync.set({
+      await chrome.storage.local.set({
         [REVIEW_PROMPT_STORAGE_KEY]: JSON.stringify(updated),
       });
       this.notifyReviewPromptListeners(updated);
@@ -209,7 +223,7 @@ class StorageService {
     try {
       const current = await this.getReviewPromptState();
       const updated: ReviewPromptState = { ...current, snoozeUntil };
-      await chrome.storage.sync.set({
+      await chrome.storage.local.set({
         [REVIEW_PROMPT_STORAGE_KEY]: JSON.stringify(updated),
       });
       this.notifyReviewPromptListeners(updated);

@@ -31,11 +31,11 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
   return (
     <div className={`w-full ${className}`}>
       {label && (
-        <label className="block text-sm font-bold text-gray-900 mb-2">
+        <label className="mb-1 block text-sm font-extrabold text-gray-900 sm:text-base">
           {label}
         </label>
       )}
-      <div className="space-y-1.5" role="radiogroup" aria-labelledby={label ? `${groupId}-label` : undefined}>
+      <div className="space-y-1" role="radiogroup" aria-labelledby={label ? `${groupId}-label` : undefined}>
         {options.map((option) => {
           const isSelected = value === option.value;
           const optionId = `${groupId}-${option.value}`;
@@ -50,7 +50,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               id={optionId}
               onClick={(): void => handleChange(option.value)}
               className={`
-                w-full text-left p-2.5 rounded-lg border transition-all duration-300
+                w-full rounded-lg border p-2 text-left transition-all duration-300
                 focus:outline-none bg-linear-to-br from-white to-slate-50 shadow-card-sm
                 ${
                   isSelected
@@ -87,8 +87,8 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                 </div>
                 <span
                   className={`
-                  text-sm flex-1
-                  ${isSelected ? 'text-gray-900 font-semibold' : 'text-gray-700 font-medium'}
+                  flex-1 text-sm leading-snug sm:text-base
+                  ${isSelected ? 'font-bold text-gray-900' : 'font-semibold text-gray-700'}
                 `}
                 >
                   {option.label}

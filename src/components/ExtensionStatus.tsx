@@ -53,15 +53,15 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border shadow-card p-3 sm:p-4 transition-all duration-300 flex flex-col hover:shadow-lg bg-linear-to-br from-white to-slate-50 ${isEnabled ? 'border-emerald-200' : 'border-gray-200'} ${className}`}
+      className={`relative flex flex-col overflow-hidden rounded-xl border bg-linear-to-br from-white to-slate-50 p-2.5 shadow-card transition-all duration-300 hover:shadow-lg sm:p-3 ${isEnabled ? 'border-emerald-200' : 'border-gray-200'} ${className}`}
     >
       <div className={`${gradientBarClass} rounded-t-xl`} />
       <div className="flex items-center justify-between flex-1">
         <div className="flex-1">
-          <h3 className="text-base font-black text-black mb-0.5">
+          <h3 className="mb-0.5 text-lg font-black leading-tight text-black sm:text-xl">
             Extension Status
           </h3>
-          <p className={`text-xs font-semibold ${isEnabled ? 'text-emerald-700' : 'text-gray-600'}`}>
+          <p className={`text-sm font-semibold leading-snug ${isEnabled ? 'text-emerald-700' : 'text-gray-600'}`}>
             {isEnabled ? 'Active and monitoring tabs' : 'Disabled'}
           </p>
         </div>
@@ -72,12 +72,12 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
           className="ml-3"
         />
       </div>
-      <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
+      <div className="mt-2 flex items-center justify-between border-t border-gray-200 pt-2">
         <div className="flex-1 min-w-0 pr-3">
-          <p className="text-sm font-semibold text-black">
+          <p className="text-base font-bold text-gray-900">
             All windows
           </p>
-          <p className="text-xs text-gray-600 mt-0.5">
+          <p className="mt-0.5 text-sm font-medium leading-snug text-gray-600">
             When off, only the current window is checked
           </p>
         </div>

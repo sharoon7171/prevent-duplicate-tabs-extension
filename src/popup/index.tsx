@@ -74,19 +74,15 @@ const Popup: React.FC = (): React.JSX.Element => {
   }
 
   return (
-    <div className="h-full min-h-0 min-w-[480px] max-w-[520px] flex flex-col overflow-hidden bg-slate-50">
+    <div className="h-full min-h-0 w-full min-w-0 flex flex-col overflow-hidden bg-slate-50">
       <Header 
         title="Prevent Duplicate Tabs"
         subtitle="Extension settings"
         stats={{ currentTabsCount, tabsClosedCount }}
       />
-      <main className="flex-1 overflow-y-auto min-h-0 flex flex-col">
-        <div className="px-3 py-3 space-y-3 flex-1 min-h-0">
-          <ReviewPrompt
-            variant="popup"
-            enabled={settings.enabled}
-            tabsClosedCount={tabsClosedCount}
-          />
+      <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
+        <div className="flex flex-col gap-2.5 px-3 py-2.5">
+          <ReviewPrompt variant="popup" enabled={settings.enabled} />
           <ExtensionStatus initialEnabled={settings.enabled} />
           <CurrentDomainSettings initialSettings={settings} />
           <GlobalSettings initialGlobalSettings={settings.globalSettings} />

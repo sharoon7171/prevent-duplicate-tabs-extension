@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
     <img
       src={getIconSrc()}
       alt="Extension Icon"
-      className="w-10 h-10 rounded-lg shadow-md border-2 border-white/20"
+      className="h-9 w-9 rounded-lg border-2 border-white/20 shadow-md"
     />
   );
 
@@ -41,18 +41,18 @@ export const Header: React.FC<HeaderProps> = ({
       className={`w-full shrink-0 text-white shadow-header relative overflow-hidden transition-all duration-300 hover:shadow-xl bg-linear-to-br from-brand to-brand-dark ${className}`}
     >
       <div className={`${gradientBarClass} rounded-t-2xl`} />
-      <div className="max-w-6xl mx-auto px-3 py-3 sm:px-4">
+      <div className="mx-auto max-w-6xl px-3 py-2 sm:px-4">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex min-w-0 items-center gap-2.5">
             <div className="shrink-0 text-white">
               {displayIcon}
             </div>
             <div className="flex flex-col min-w-0">
-              <h1 className="text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
+              <h1 className="text-xl font-black leading-tight tracking-tight text-white sm:text-2xl">
                 {title}
               </h1>
               {subtitle && (
-                <p className="text-xs font-semibold text-blue-100 mt-0.5">
+                <p className="mt-0.5 text-sm font-semibold leading-snug text-blue-100">
                   {subtitle}
                 </p>
               )}
@@ -60,11 +60,11 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             {stats != null && (
-              <div className="flex items-center gap-1.5 text-xs font-semibold">
-                <span className="bg-white/20 text-white px-1.5 py-0.5 rounded" title="Active tabs">
+              <div className="flex items-center gap-1.5 text-sm font-bold">
+                <span className="rounded bg-white/20 px-2 py-0.5 text-white" title="Active tabs">
                   {stats.currentTabsCount.toLocaleString()} tabs
                 </span>
-                <span className="bg-white/20 text-white px-1.5 py-0.5 rounded" title="Duplicates prevented">
+                <span className="rounded bg-white/20 px-2 py-0.5 text-white" title="Duplicates prevented">
                   {stats.tabsClosedCount.toLocaleString()} prevented
                 </span>
               </div>

@@ -83,30 +83,20 @@ const Options: React.FC = (): React.JSX.Element => {
         stats={{ currentTabsCount, tabsClosedCount }}
       />
       <main className="flex-1 min-h-0 overflow-y-auto">
-      <div className="max-w-6xl mx-auto px-3 py-5 sm:px-4">
-        <ReviewPrompt
-          variant="options"
-          enabled={settings.enabled}
-          tabsClosedCount={tabsClosedCount}
-        />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5 lg:items-stretch mt-4">
-          <div className="flex flex-col space-y-4 lg:h-full">
-            <CurrentDomainSettings initialSettings={settings} />
-            <ExtensionStatus initialEnabled={settings.enabled} />
-            <div className="flex-1 min-h-0">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-3 py-3 sm:px-4">
+          <ReviewPrompt variant="options" enabled={settings.enabled} />
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
+            <div className="flex flex-col gap-3">
+              <CurrentDomainSettings initialSettings={settings} />
+              <ExtensionStatus initialEnabled={settings.enabled} />
               <GlobalSettings initialGlobalSettings={settings.globalSettings} />
             </div>
+            <div className="flex flex-col">
+              <Exceptions initialExceptions={settings.exceptions} />
+            </div>
           </div>
-
-          <div className="flex flex-col lg:h-full">
-            <Exceptions initialExceptions={settings.exceptions} />
-          </div>
-        </div>
-
-        <div className="mb-5">
           <SiteSpecificRules initialSiteRules={settings.siteRules} />
         </div>
-      </div>
       </main>
       <Footer />
     </div>

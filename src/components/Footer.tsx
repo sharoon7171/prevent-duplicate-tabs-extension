@@ -1,16 +1,13 @@
 import React from 'react';
 
 import { CHROME_WEB_STORE_REVIEWS_URL } from '@/constants/chromeWebStore';
-import { gradientBarClass } from '@/ui-classes/gradient-bar';
 import { NEW_ISSUE_URL } from '@/constants/repo';
+import { gradientBarClass } from '@/ui-classes/gradient-bar';
 
 interface FooterProps {
   className?: string;
   variant?: 'default' | 'popup';
 }
-
-const linkClass =
-  'text-brand hover:text-brand-dark transition-colors duration-200 font-semibold';
 
 export const Footer: React.FC<FooterProps> = ({
   className = '',
@@ -18,105 +15,79 @@ export const Footer: React.FC<FooterProps> = ({
 }: FooterProps): React.JSX.Element => {
   const isPopup = variant === 'popup';
 
-  if (isPopup) {
-    return (
-      <footer
-        className={`w-full shrink-0 border-t border-gray-200 mt-auto bg-slate-100/90 ${className}`}
+  const attribution = (
+    <p
+      className={
+        isPopup
+          ? 'shrink-0 text-sm font-medium text-gray-600'
+          : 'shrink-0 text-sm font-medium text-gray-600 sm:text-base'
+      }
+    >
+      By{' '}
+      <a
+        href="https://www.sqtech.dev/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-bold text-brand transition-colors duration-200 hover:text-brand-dark"
       >
-        <div className="px-3 py-2.5 flex flex-col gap-2 text-xs text-gray-600">
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5">
-            <a
-              href={CHROME_WEB_STORE_REVIEWS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClass}
-            >
-              Rate extension
-            </a>
-            <span className="text-gray-300 select-none" aria-hidden="true">
-              |
-            </span>
-            <a
-              href={`${NEW_ISSUE_URL}?labels=bug`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClass}
-            >
-              Report a Bug
-            </a>
-            <span className="text-gray-300 select-none" aria-hidden="true">
-              |
-            </span>
-            <a
-              href={`${NEW_ISSUE_URL}?labels=enhancement`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClass}
-            >
-              Request a Feature
-            </a>
-          </div>
-          <p className="text-center leading-snug">
-            Developed by{' '}
-            <a
-              href="https://www.sqtech.dev/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={linkClass}
-            >
-              SQ Tech
-            </a>
-          </p>
-        </div>
-      </footer>
-    );
-  }
+        SQ Tech
+      </a>
+    </p>
+  );
+
+  const actionGroup = (
+    <div className="inline-flex divide-x divide-gray-200 overflow-hidden rounded-md border border-gray-200 bg-white shadow-card-sm">
+      <a
+        href={CHROME_WEB_STORE_REVIEWS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center bg-white px-2.5 py-1.5 text-sm font-extrabold text-gray-800 transition-colors duration-200 hover:text-brand focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand"
+      >
+        Rate extension
+      </a>
+      <a
+        href={`${NEW_ISSUE_URL}?labels=enhancement`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center bg-white px-2.5 py-1.5 text-sm font-extrabold text-gray-800 transition-colors duration-200 hover:text-brand focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand"
+      >
+        Request feature
+      </a>
+      <a
+        href={`${NEW_ISSUE_URL}?labels=bug`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center bg-white px-2.5 py-1.5 text-sm font-extrabold text-gray-800 transition-colors duration-200 hover:text-brand focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand"
+      >
+        Report bug
+      </a>
+    </div>
+  );
+
+  const trailing = (
+    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-0">
+      <span
+        className="hidden h-4 w-px shrink-0 bg-gray-300/80 sm:mr-3 sm:block"
+        aria-hidden="true"
+      />
+      {actionGroup}
+    </div>
+  );
+
+  const innerClass = isPopup
+    ? 'px-3 py-2'
+    : 'mx-auto max-w-6xl px-3 py-2 sm:px-4 sm:py-2.5';
 
   return (
     <footer
-      className={`w-full shrink-0 border-t border-gray-200 mt-auto relative overflow-hidden bg-linear-to-br from-slate-50 to-slate-200 ${className}`}
+      className={`relative mt-3 w-full shrink-0 overflow-hidden border-t border-gray-200/80 ${isPopup ? 'bg-slate-100/95' : 'bg-slate-50'} ${className}`}
     >
       <div className={gradientBarClass} />
-      <div className="max-w-6xl mx-auto px-3 py-2 sm:px-4 flex flex-col items-center gap-2 text-xs sm:text-sm text-gray-500">
-        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1">
-          <a
-            href={CHROME_WEB_STORE_REVIEWS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            Rate extension
-          </a>
-          <span className="text-gray-300 hidden sm:inline">|</span>
-          <a
-            href={`${NEW_ISSUE_URL}?labels=bug`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            Report a Bug
-          </a>
-          <span className="text-gray-300">|</span>
-          <a
-            href={`${NEW_ISSUE_URL}?labels=enhancement`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            Request a Feature
-          </a>
+      <div className={innerClass}>
+        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+          {attribution}
+          {trailing}
         </div>
-        <span className="text-center">
-          Developed by{' '}
-          <a
-            href="https://www.sqtech.dev/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={linkClass}
-          >
-            SQ Tech
-          </a>
-        </span>
       </div>
     </footer>
   );
