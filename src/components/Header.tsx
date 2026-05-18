@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { gradientBarClass } from '@/ui-classes/gradient-bar';
+import { cardShellTopRadius, headerIcon, headerInner, headerStatBadge } from '@/ui-classes/layout';
+import { textAppSubtitle, textAppTitle } from '@/ui-classes/typography';
 
 interface HeaderProps {
   title: string;
@@ -27,53 +29,39 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const defaultIcon = (
-    <img
-      src={getIconSrc()}
-      alt="Extension Icon"
-      className="h-9 w-9 rounded-lg border-2 border-white/20 shadow-md"
-    />
+    <img src={getIconSrc()} alt="Extension Icon" className={headerIcon} />
   );
 
   const displayIcon = icon ?? defaultIcon;
 
   return (
     <header
-      className={`w-full shrink-0 text-white shadow-header relative overflow-hidden transition-all duration-300 hover:shadow-xl bg-linear-to-br from-brand to-brand-dark ${className}`}
+      className={`relative w-full shrink-0 overflow-hidden bg-linear-to-br from-brand to-brand-dark text-white shadow-header transition-all duration-300 hover:shadow-xl ${className}`}
     >
-      <div className={`${gradientBarClass} rounded-t-2xl`} />
-      <div className="mx-auto max-w-6xl px-3 py-2 sm:px-4">
+      <div className={`${gradientBarClass} ${cardShellTopRadius}`} />
+      <div className={headerInner}>
         <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <div className="shrink-0 text-white">
-              {displayIcon}
-            </div>
-            <div className="flex flex-col min-w-0">
-              <h1 className="text-xl font-black leading-tight tracking-tight text-white sm:text-2xl">
-                {title}
-              </h1>
+          <div className="flex min-w-0 items-center gap-2">
+            <div className="shrink-0 text-white">{displayIcon}</div>
+            <div className="flex min-w-0 flex-col">
+              <h1 className={`${textAppTitle} text-white`}>{title}</h1>
               {subtitle && (
-                <p className="mt-0.5 text-sm font-semibold leading-snug text-blue-100">
-                  {subtitle}
-                </p>
+                <p className={`mt-0.5 ${textAppSubtitle} text-blue-100`}>{subtitle}</p>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex shrink-0 items-center gap-1">
             {stats != null && (
-              <div className="flex items-center gap-1.5 text-sm font-bold">
-                <span className="rounded bg-white/20 px-2 py-0.5 text-white" title="Active tabs">
+              <div className="flex items-center gap-1 font-bold">
+                <span className={headerStatBadge} title="Active tabs">
                   {stats.currentTabsCount.toLocaleString()} tabs
                 </span>
-                <span className="rounded bg-white/20 px-2 py-0.5 text-white" title="Duplicates prevented">
+                <span className={headerStatBadge} title="Duplicates prevented">
                   {stats.tabsClosedCount.toLocaleString()} prevented
                 </span>
               </div>
             )}
-            {actions && (
-              <div className="flex items-center gap-2">
-                {actions}
-              </div>
-            )}
+            {actions && <div className="flex items-center gap-1.5">{actions}</div>}
           </div>
         </div>
       </div>

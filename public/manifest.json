@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Prevent Duplicate Tabs",
+  "version": "1.6.0",
   "description": "Prevent duplicate tabs from being opened",
-  "version": "1.5.0",
   "icons": {
     "16": "icon-16.png",
     "48": "icon-48.png",
@@ -16,12 +16,13 @@
     "type": "module"
   },
   "options_ui": {
-    "page": "options.html",
-    "open_in_tab": true
+    "open_in_tab": true,
+    "page": "options.html"
   },
   "permissions": [
-    "tabs",
+    "contextMenus",
     "storage",
+    "tabs",
     "windows"
   ]
 }

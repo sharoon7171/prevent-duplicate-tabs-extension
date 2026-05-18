@@ -6,6 +6,18 @@ import { storageService } from '@/services/storage';
 import type { ExtensionSettings, DuplicateAction } from '@/types/settings';
 import { normalizeException, isPageInExceptions, isDomainInExceptions } from '@/utils/urlNormalization';
 import { gradientBarClass } from '@/ui-classes/gradient-bar';
+import {
+  accentPanel,
+  cardHeaderRow,
+  cardIconBox,
+  cardIconSvg,
+  cardShell,
+  cardShellTopRadius,
+  innerPanel,
+  innerPanelFlat,
+  toggleRowInset,
+} from '@/ui-classes/layout';
+import { textBody, textCardSubtitle, textCardTitle, textSectionLabel } from '@/ui-classes/typography';
 
 interface CurrentDomainSettingsProps {
   className?: string;
@@ -145,41 +157,37 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
 
   return (
     <div 
-      className={`relative flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-linear-to-br from-white to-slate-50 p-2.5 shadow-card transition-all duration-300 hover:border-gray-300 hover:shadow-lg sm:p-3 ${className}`}
+      className={`${cardShell} ${className}`}
     >
-      <div className={`${gradientBarClass} rounded-t-xl`} />
-      <div className="mb-2 flex items-center gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg border-2 border-blue-200 bg-white shadow-md">
-          <svg className="h-4 w-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className={`${gradientBarClass} ${cardShellTopRadius}`} />
+      <div className={cardHeaderRow}>
+        <div className={cardIconBox}>
+          <svg className={`${cardIconSvg} text-brand`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
           </svg>
         </div>
         <div className="flex-1 min-w-0">
-          <h2 className="text-lg font-black leading-tight text-black sm:text-xl">
-            Current Domain
-          </h2>
-          <p className="mt-0.5 truncate text-sm font-semibold text-gray-600" title={currentUrl}>
+          <h2 className={textCardTitle}>Current Domain</h2>
+          <p className={`mt-0.5 truncate ${textCardSubtitle}`} title={currentUrl}>
             {currentDomain}
           </p>
         </div>
       </div>
 
-      <div className="space-y-2">
-        <div className="space-y-2">
-          <h3 className="text-[11px] font-extrabold uppercase tracking-wider text-gray-700 sm:text-xs">
-            Exceptions
-          </h3>
-          <div className="rounded-lg border-2 border-amber-200 bg-linear-to-r from-amber-50 to-orange-50">
+      <div className="space-y-1.5">
+        <div className="space-y-1.5">
+          <h3 className={textSectionLabel}>Exceptions</h3>
+          <div className={accentPanel}>
             <Toggle
               label="Allow duplicates for this page"
               description="Allow duplicate tabs for this specific page"
               checked={isPageInExceptionsList}
               onChange={handleUrlExceptionToggle}
               interactiveRow
-              className="w-full p-2.5"
+              className={toggleRowInset}
             />
           </div>
-          <div className="rounded-lg border-2 border-amber-200 bg-linear-to-r from-amber-50 to-orange-50">
+          <div className={accentPanel}>
             <Toggle
               label="Allow duplicates for this domain"
               description={`Allow duplicate tabs for all pages on ${currentDomain}`}
@@ -191,11 +199,9 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <h3 className="text-[11px] font-extrabold uppercase tracking-wider text-gray-700 sm:text-xs">
-              Site-Specific Rules
-            </h3>
+            <h3 className={textSectionLabel}>Site-Specific Rules</h3>
             {hasSiteRule && (
               <Button variant="ghost" color="danger" onClick={handleRemoveSiteRule} className="text-xs px-2 py-1">
                 Remove Rule
@@ -205,7 +211,7 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
           
           
           <div className="space-y-1.5">
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-2.5">
+            <div className={innerPanel}>
               <RadioGroup
                 label="When duplicate tab detected"
                 value={currentDuplicateAction}
@@ -216,11 +222,9 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
                   });
                 }}
               />
-              <p className="ml-0 mt-1.5 text-sm font-medium leading-snug text-gray-600">
-                Choose how to handle duplicate tabs for this domain
-              </p>
+              <p className={`ml-0 mt-1 ${textBody}`}>Choose how to handle duplicate tabs for this domain</p>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-gray-50">
+            <div className={innerPanelFlat}>
               <Toggle
                 label="Ignore URL parameters"
                 description="Match URLs without query parameters (?id=123, etc.)"
@@ -231,7 +235,7 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
                   });
                 }}
                 interactiveRow
-                className="w-full p-2.5"
+                className={toggleRowInset}
               />
             </div>
           </div>

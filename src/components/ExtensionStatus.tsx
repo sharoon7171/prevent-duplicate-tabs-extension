@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+
 import { Toggle } from './Toggle';
 import { storageService } from '@/services/storage';
 import { gradientBarClass } from '@/ui-classes/gradient-bar';
+import { cardShell, cardShellTopRadius } from '@/ui-classes/layout';
+import { textBody, textBodyBold, textCaption, textCardTitle } from '@/ui-classes/typography';
 import type { DuplicateScope } from '@/types/settings';
 
 interface ExtensionStatusProps {
@@ -53,40 +56,24 @@ export const ExtensionStatus: React.FC<ExtensionStatusProps> = ({
 
   return (
     <div
-      className={`relative flex flex-col overflow-hidden rounded-xl border bg-linear-to-br from-white to-slate-50 p-2.5 shadow-card transition-all duration-300 hover:shadow-lg sm:p-3 ${isEnabled ? 'border-emerald-200' : 'border-gray-200'} ${className}`}
+      className={`${cardShell} hover:shadow-lg ${isEnabled ? 'border-emerald-200' : ''} ${className}`}
     >
-      <div className={`${gradientBarClass} rounded-t-xl`} />
-      <div className="flex items-center justify-between flex-1">
+      <div className={`${gradientBarClass} ${cardShellTopRadius}`} />
+      <div className="flex flex-1 items-center justify-between">
         <div className="flex-1">
-          <h3 className="mb-0.5 text-lg font-black leading-tight text-black sm:text-xl">
-            Extension Status
-          </h3>
-          <p className={`text-sm font-semibold leading-snug ${isEnabled ? 'text-emerald-700' : 'text-gray-600'}`}>
+          <h3 className={`mb-0.5 ${textCardTitle}`}>Extension Status</h3>
+          <p className={`${textCaption} ${isEnabled ? 'text-emerald-700' : ''}`}>
             {isEnabled ? 'Active and monitoring tabs' : 'Disabled'}
           </p>
         </div>
-        <Toggle
-          label=""
-          checked={isEnabled}
-          onChange={handleToggle}
-          className="ml-3"
-        />
+        <Toggle label="" checked={isEnabled} onChange={handleToggle} className="ml-2" />
       </div>
-      <div className="mt-2 flex items-center justify-between border-t border-gray-200 pt-2">
-        <div className="flex-1 min-w-0 pr-3">
-          <p className="text-base font-bold text-gray-900">
-            All windows
-          </p>
-          <p className="mt-0.5 text-sm font-medium leading-snug text-gray-600">
-            When off, only the current window is checked
-          </p>
+      <div className="mt-1.5 flex items-center justify-between border-t border-gray-200 pt-1.5">
+        <div className="min-w-0 flex-1 pr-2">
+          <p className={textBodyBold}>All windows</p>
+          <p className={`mt-0.5 ${textBody}`}>When off, only the current window is checked</p>
         </div>
-        <Toggle
-          label=""
-          checked={checkAllWindows}
-          onChange={handleScopeToggle}
-          className="shrink-0"
-        />
+        <Toggle label="" checked={checkAllWindows} onChange={handleScopeToggle} className="shrink-0" />
       </div>
     </div>
   );

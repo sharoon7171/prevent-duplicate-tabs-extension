@@ -15,7 +15,7 @@ import {
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings } from '@/types/settings';
 import { getCurrentTabsCount } from '@/utils/statistics';
-import '../styles/register-poppins';
+import { optionsColumnStack, optionsGrid, optionsMainStack } from '@/ui-classes/layout';
 import '../styles/index.css';
 
 const Options: React.FC = (): React.JSX.Element => {
@@ -83,10 +83,10 @@ const Options: React.FC = (): React.JSX.Element => {
         stats={{ currentTabsCount, tabsClosedCount }}
       />
       <main className="flex-1 min-h-0 overflow-y-auto">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-3 py-3 sm:px-4">
+        <div className={optionsMainStack}>
           <ReviewPrompt variant="options" enabled={settings.enabled} />
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2 lg:items-start">
-            <div className="flex flex-col gap-3">
+          <div className={optionsGrid}>
+            <div className={optionsColumnStack}>
               <CurrentDomainSettings initialSettings={settings} />
               <ExtensionStatus initialEnabled={settings.enabled} />
               <GlobalSettings initialGlobalSettings={settings.globalSettings} />

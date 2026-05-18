@@ -1,5 +1,12 @@
 import React from 'react';
 
+import {
+  radioCheckIcon,
+  radioIndicator,
+  radioOptionButton,
+} from '@/ui-classes/control';
+import { textControlLabel, textRadioOption } from '@/ui-classes/typography';
+
 interface SelectOption {
   value: string;
   label: string;
@@ -31,7 +38,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
   return (
     <div className={`w-full ${className}`}>
       {label && (
-        <label className="mb-1 block text-sm font-extrabold text-gray-900 sm:text-base">
+        <label className={`mb-0.5 block ${textControlLabel}`}>
           {label}
         </label>
       )}
@@ -49,34 +56,20 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               aria-label={option.label}
               id={optionId}
               onClick={(): void => handleChange(option.value)}
-              className={`
-                w-full rounded-lg border p-2 text-left transition-all duration-300
-                focus:outline-none bg-linear-to-br from-white to-slate-50 shadow-card-sm
-                ${
-                  isSelected
-                    ? 'border-gray-300 shadow-md'
-                    : 'border-gray-200 hover:border-gray-300 hover:-translate-y-0.5 hover:shadow-lg'
-                }
-              `}
+              className={`${radioOptionButton} ${
+                isSelected
+                  ? 'border-gray-300 shadow-md'
+                  : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+              }`}
             >
-              <div className="flex items-start gap-2">
+              <div className="flex items-start gap-1.5">
                 <div
-                  className={`
-                  shrink-0 w-5 h-5 mt-0.5 rounded-full border-2 flex items-center justify-center
-                  transition-all duration-200
-                  ${
-                    isSelected
-                      ? 'border-brand bg-brand'
-                      : 'border-gray-300 bg-white'
-                  }
-                `}
+                  className={`${radioIndicator} ${
+                    isSelected ? 'border-brand bg-brand' : 'border-gray-300 bg-white'
+                  }`}
                 >
                   {isSelected && (
-                    <svg
-                      className="w-3 h-3 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
+                    <svg className={radioCheckIcon} fill="currentColor" viewBox="0 0 20 20">
                       <path
                         fillRule="evenodd"
                         d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -86,10 +79,9 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
                   )}
                 </div>
                 <span
-                  className={`
-                  flex-1 text-sm leading-snug sm:text-base
-                  ${isSelected ? 'font-bold text-gray-900' : 'font-semibold text-gray-700'}
-                `}
+                  className={`flex-1 ${textRadioOption} ${
+                    isSelected ? 'font-bold text-gray-900' : 'font-semibold text-gray-700'
+                  }`}
                 >
                   {option.label}
                 </span>

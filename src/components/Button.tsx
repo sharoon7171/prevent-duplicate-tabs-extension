@@ -1,5 +1,13 @@
 import React from 'react';
 
+import {
+  buttonDashed,
+  buttonGhost,
+  buttonPrimary,
+  buttonSecondary,
+  buttonText,
+} from '@/ui-classes/control';
+
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'dashed';
 type ButtonColor = 'brand' | 'danger' | 'success' | 'muted';
 
@@ -14,14 +22,10 @@ interface ButtonProps {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    'rounded-xl bg-brand px-4 py-2 text-white shadow-md hover:bg-brand-dark hover:shadow-lg',
-  secondary:
-    'rounded-xl bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300',
-  ghost:
-    'rounded-lg px-2.5 py-1',
-  dashed:
-    'rounded-xl border-2 border-dashed border-gray-300 bg-linear-to-br from-white to-slate-50 px-3 py-2 text-gray-700 hover:border-gray-400 hover:bg-gray-50 hover:text-gray-900',
+  primary: buttonPrimary,
+  secondary: buttonSecondary,
+  ghost: buttonGhost,
+  dashed: buttonDashed,
 };
 
 const ghostColorClasses: Record<ButtonColor, string> = {
@@ -47,7 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={onClick}
-      className={`text-sm font-bold focus:outline-none transition-all duration-200 sm:text-base ${base} ${colorClass} ${className}`}
+      className={`${buttonText} ${base} ${colorClass} ${className}`}
       title={title}
     >
       {children}

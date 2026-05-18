@@ -4,6 +4,9 @@ import { Button } from '@/components/Button';
 import { CHROME_WEB_STORE_REVIEWS_URL } from '@/constants/chromeWebStore';
 import { storageService } from '@/services/storage';
 import { gradientBarClass } from '@/ui-classes/gradient-bar';
+import { cardShellTopRadius, reviewPromptShell } from '@/ui-classes/layout';
+import { reviewCtaButton } from '@/ui-classes/control';
+import { textReviewAction, textReviewBody, textReviewTitle } from '@/ui-classes/typography';
 import { type ReviewPromptState } from '@/types/reviewPrompt';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -14,10 +17,10 @@ const STAR_PATH =
   'M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.563.563 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.563.563 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5z';
 
 function StarRow({ compact }: { compact: boolean }): React.JSX.Element {
-  const size = compact ? 'h-4 w-4' : 'h-6 w-6';
+  const size = compact ? 'h-3.5 w-3.5' : 'h-4 w-4';
   return (
     <div
-      className="flex justify-center items-center gap-1"
+      className="flex items-center justify-center gap-0.5"
       role="img"
       aria-label="Reviews on the Chrome Web Store can include a star rating"
     >
@@ -113,24 +116,18 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
     return null;
   }
 
-  const secondaryActionClass = `shrink-0 cursor-pointer rounded-sm border-0 bg-transparent px-0.5 py-1 font-medium text-gray-600 underline decoration-transparent underline-offset-2 transition-colors duration-200 hover:text-brand hover:decoration-brand/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${isPopup ? 'text-sm' : 'text-sm sm:text-base'}`;
-
-  const shell =
-    'relative overflow-hidden flex flex-col items-center gap-2.5 text-center rounded-xl border border-gray-200 bg-linear-to-br from-white to-slate-50 p-2.5 shadow-card transition-all duration-300 hover:border-gray-300 hover:shadow-lg sm:p-3';
+  const secondaryActionClass = `shrink-0 cursor-pointer rounded-sm border-0 bg-transparent px-0.5 py-0.5 ${textReviewAction} underline decoration-transparent underline-offset-2 transition-colors duration-200 hover:text-brand hover:decoration-brand/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2`;
 
   return (
-    <div className={shell} role="region" aria-labelledby="review-prompt-heading">
-      <div className={`${gradientBarClass} rounded-t-xl`} />
+    <div className={reviewPromptShell} role="region" aria-labelledby="review-prompt-heading">
+      <div className={`${gradientBarClass} ${cardShellTopRadius}`} />
       <StarRow compact={isPopup} />
 
-      <div className="space-y-1.5 w-full max-w-md mx-auto">
-        <h2
-          id="review-prompt-heading"
-          className={`font-black leading-tight text-black ${isPopup ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'}`}
-        >
+      <div className="mx-auto w-full max-w-sm space-y-1">
+        <h2 id="review-prompt-heading" className={textReviewTitle}>
           Enjoying Prevent Duplicate Tabs?
         </h2>
-        <p className={`font-medium leading-snug text-gray-600 ${isPopup ? 'text-sm' : 'text-sm sm:text-base'}`}>
+        <p className={textReviewBody}>
           Tap below to leave a quick star rating — it helps others find the extension.
         </p>
       </div>
@@ -140,10 +137,10 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
         variant="primary"
         color="brand"
         onClick={handleRate}
-        className={`mx-auto flex h-10 w-full max-w-md flex-row items-center justify-center gap-2 rounded-xl text-sm font-extrabold sm:h-11 ${isPopup ? 'sm:text-base' : 'sm:text-lg'}`}
+        className={reviewCtaButton}
       >
         <svg
-          className="h-4 w-4 shrink-0 text-amber-300"
+          className="h-3.5 w-3.5 shrink-0 text-amber-300"
           viewBox="0 0 24 24"
           fill="currentColor"
           aria-hidden="true"
@@ -153,7 +150,7 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
         <span>Rate on Chrome Web Store</span>
       </Button>
 
-      <div className="mx-auto flex max-w-md flex-row flex-wrap items-center justify-center gap-x-1 gap-y-1">
+      <div className="mx-auto flex max-w-sm flex-row flex-wrap items-center justify-center gap-x-1 gap-y-0.5">
         <button type="button" onClick={handleReviewLater} className={secondaryActionClass}>
           Remind me later
         </button>

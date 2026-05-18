@@ -1,0 +1,17 @@
+export const textAppTitle = 'text-base font-black leading-tight tracking-tight';
+export const textAppSubtitle = 'text-xs font-semibold leading-snug';
+export const textCardTitle = 'text-sm font-black leading-tight text-black';
+export const textCardSubtitle = 'text-xs font-semibold leading-snug text-gray-600';
+export const textSectionLabel = 'text-[10px] font-extrabold uppercase tracking-wider text-gray-700';
+export const textBody = 'text-xs font-medium leading-snug text-gray-600';
+export const textBodyBold = 'text-xs font-bold text-gray-900';
+export const textCaption = 'text-[11px] font-semibold leading-snug text-gray-600';
+export const textControlLabel = 'text-xs font-extrabold text-gray-900';
+export const textControlHint = 'text-[11px] font-medium leading-snug text-gray-600';
+export const textBadge = 'text-[10px] font-extrabold';
+export const textFooter = 'text-[11px] font-medium text-gray-600';
+export const textFooterAction = 'text-[11px] font-extrabold text-gray-800';
+export const textRadioOption = 'text-xs leading-snug';
+export const textReviewTitle = 'text-sm font-black leading-tight text-black';
+export const textReviewBody = 'text-xs font-medium leading-snug text-gray-600';
+export const textReviewAction = 'text-[11px] font-medium text-gray-600';

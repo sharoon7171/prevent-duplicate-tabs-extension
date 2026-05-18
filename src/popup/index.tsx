@@ -13,7 +13,7 @@ import {
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings } from '@/types/settings';
 import { getCurrentTabsCount } from '@/utils/statistics';
-import '../styles/register-poppins';
+import { popupMainStack } from '@/ui-classes/layout';
 import '../styles/index.css';
 
 const Popup: React.FC = (): React.JSX.Element => {
@@ -81,7 +81,7 @@ const Popup: React.FC = (): React.JSX.Element => {
         stats={{ currentTabsCount, tabsClosedCount }}
       />
       <main className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain">
-        <div className="flex flex-col gap-2.5 px-3 py-2.5">
+        <div className={popupMainStack}>
           <ReviewPrompt variant="popup" enabled={settings.enabled} />
           <ExtensionStatus initialEnabled={settings.enabled} />
           <CurrentDomainSettings initialSettings={settings} />

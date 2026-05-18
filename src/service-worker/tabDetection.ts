@@ -10,6 +10,8 @@ class TabDetectionService {
   private unsubscribeSettings: (() => void) | null = null;
   /** Tabs currently in process to avoid re-entrancy/races. */
   private processingTabs: Set<number> = new Set();
+  private bypassTabIds: Set<number> = new Set();
+  private bypassCreateCount = 0;
 
   async initialize(): Promise<void> {
     if (this.isInitialized) {
@@ -23,9 +25,14 @@ class TabDetectionService {
     storageService.initializeChangeListener();
 
     chrome.tabs.onCreated.addListener((tab) => {
+      this.applyBypassForNewTab(tab.id);
       this.handleTabCreated(tab.id).catch((error) => {
         console.error('Error handling tab creation:', error);
       });
+    });
+
+    chrome.tabs.onRemoved.addListener((tabId) => {
+      this.bypassTabIds.delete(tabId);
     });
 
     chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -37,6 +44,32 @@ class TabDetectionService {
     });
 
     this.isInitialized = true;
+  }
+
+  async openTabAllowingDuplicate(url: string): Promise<void> {
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+        return;
+      }
+    } catch {
+      return;
+    }
+
+    this.bypassCreateCount += 1;
+    await chrome.tabs.create({ url, active: true });
+  }
+
+  private applyBypassForNewTab(tabId: number | undefined): void {
+    if (tabId === undefined || this.bypassCreateCount <= 0) {
+      return;
+    }
+    this.bypassCreateCount -= 1;
+    this.bypassTabIds.add(tabId);
+  }
+
+  private isBypassTab(tabId: number | undefined): boolean {
+    return tabId !== undefined && this.bypassTabIds.has(tabId);
   }
 
   private async handleTabCreated(tabId: number | undefined): Promise<void> {
@@ -60,6 +93,9 @@ class TabDetectionService {
   }
 
   private async processTab(tab: chrome.tabs.Tab, tabId: number): Promise<void> {
+    if (this.isBypassTab(tabId)) {
+      return;
+    }
     if (!this.currentSettings?.enabled) {
       return;
     }
@@ -216,6 +252,8 @@ class TabDetectionService {
       this.unsubscribeSettings = null;
     }
     this.processingTabs.clear();
+    this.bypassTabIds.clear();
+    this.bypassCreateCount = 0;
     this.isInitialized = false;
   }
 }

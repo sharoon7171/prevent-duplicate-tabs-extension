@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { inputField } from '@/ui-classes/control';
+import { textControlLabel } from '@/ui-classes/typography';
+
 interface InputProps {
   label?: string;
   placeholder?: string;
@@ -22,7 +25,7 @@ export const Input: React.FC<InputProps> = ({
   return (
     <div className={`w-full ${className}`}>
       {label && (
-        <label className="mb-1 block text-sm font-extrabold text-gray-900 sm:text-base">
+        <label className={`mb-0.5 block ${textControlLabel}`}>
           {label}
         </label>
       )}
@@ -32,7 +35,7 @@ export const Input: React.FC<InputProps> = ({
         onChange={(e): void => onChange(e.target.value)}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
-        className="w-full rounded-lg border-2 border-gray-300 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm transition-all duration-200 placeholder-gray-500 hover:border-gray-400 focus:border-brand focus:outline-none sm:text-base"
+        className={inputField}
       />
     </div>
   );
