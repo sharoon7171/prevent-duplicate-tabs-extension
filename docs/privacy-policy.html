@@ -10,12 +10,12 @@
   <p>Last updated: May 2026</p>
 
   <h2>Overview</h2>
-  <p>Prevent Duplicate Tabs is a Chrome extension that helps you avoid opening duplicate browser tabs. You can allow duplicates for specific sites, override behavior per domain, or open a single tab without prevention by right-clicking a link. This policy describes what data the extension uses and where it is stored.</p>
+  <p>Prevent Duplicate Tabs is a Chrome extension that helps you avoid opening duplicate browser tabs. You can prevent duplicates on all websites with exceptions, or only on sites you list; override behavior per domain; or open a single tab without prevention by right-clicking a link. This policy describes what data the extension uses and where it is stored.</p>
 
   <h2>Data We Use</h2>
   <ul>
     <li><strong>Browser tabs</strong> – The extension uses the <code>tabs</code> permission to read tab URLs only for duplicate detection and to close, switch, or open tabs as part of your settings. It does not read page content, and it does not store or send your browsing history anywhere.</li>
-    <li><strong>Your settings</strong> – Preferences you set in the extension (e.g. duplicate action, scope for duplicate check (all windows or current window only), exception URLs/domains, site-specific rules) are stored locally on your device using Chrome’s storage API.</li>
+    <li><strong>Your settings</strong> – Preferences you set in the extension (e.g. duplicate action, prevention scope, scope for duplicate check (all windows or current window only), exception or monitored-site URLs/domains, site-specific rules) are stored locally on your device using Chrome’s storage API.</li>
     <li><strong>Statistics</strong> – A single count of how many duplicate tabs the extension has closed is stored locally. No other usage or analytics data is collected.</li>
     <li><strong>Review prompt</strong> – If shown, whether you dismissed or snoozed the optional “rate the extension” reminder is stored locally only (<code>chrome.storage.local</code>). No account or identity is involved.</li>
   </ul>

@@ -20,7 +20,8 @@ import {
   formPanelShell,
   innerPanel,
   innerPanelFlat,
-  scrollListTall,
+  scrollListFrame,
+  optionsListScroll,
   toggleRowInset,
 } from '@/ui-classes/layout';
 import { textBadge, textBodyBold, textCaption, textCardSubtitle, textCardTitle } from '@/ui-classes/typography';
@@ -169,7 +170,7 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
   };
 
   return (
-    <div className={`${cardShell} ${className}`}>
+    <div className={`${cardShell} flex h-full min-h-0 flex-col ${className}`}>
       <div className={`${gradientBarClass} ${cardShellTopRadius}`} />
       <div className={cardHeaderRow}>
         <div className={cardIconBox}>
@@ -187,7 +188,8 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
         </div>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="shrink-0">
         <p className={`mb-1.5 ${textCardSubtitle}`}>
           Override global settings for specific domains
         </p>
@@ -252,11 +254,12 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
             />
           </div>
         )}
+        </div>
 
-        <div className="flex flex-col">
-          {filteredRules.length > 0 && (
-            <div className={scrollListTall}>
-              {filteredRules.map(({ rule, originalIndex }) => {
+        <div className={`${scrollListFrame} mt-auto`}>
+          <div className={optionsListScroll}>
+            {filteredRules.length > 0 ? (
+              filteredRules.map(({ rule, originalIndex }) => {
                 const isExpanded = expandedRules.has(originalIndex);
                 const isEditingDomain = editingDomainIndex === originalIndex;
 
@@ -400,31 +403,27 @@ export const SiteSpecificRules: React.FC<SiteSpecificRulesProps> = ({
                     )}
                   </div>
                 );
-              })}
-            </div>
-          )}
-
-          {siteRules.length === 0 && !showAddForm && (
-            <div className={emptyStateWrap}>
-              <div className={emptyStateIcon}>
-                <svg className={emptyStateIconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
+              })
+            ) : siteRules.length === 0 && !showAddForm ? (
+              <div className={emptyStateWrap}>
+                <div className={emptyStateIcon}>
+                  <svg className={emptyStateIconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+                <p className={textCaption}>No site-specific rules configured</p>
               </div>
-              <p className={textCaption}>No site-specific rules configured</p>
-            </div>
-          )}
-
-          {siteRules.length > 0 && filteredRules.length === 0 && (
-            <div className={emptyStateWrap}>
-              <div className={emptyStateIcon}>
-                <svg className={emptyStateIconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+            ) : (
+              <div className={emptyStateWrap}>
+                <div className={emptyStateIcon}>
+                  <svg className={emptyStateIconSvg} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <p className={textCaption}>No rules match your search</p>
               </div>
-              <p className={textCaption}>No rules match your search</p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

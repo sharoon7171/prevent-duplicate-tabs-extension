@@ -1,6 +1,6 @@
 Prevent Duplicate Tabs is a Chrome extension that stops duplicate tabs before they clutter your browser. If you open the same link twice, it detects the match and closes the extra tab or switches you to the tab you already have open—so you save memory, stay organized, and stop hunting through identical pages.
 
-Install this duplicate tab blocker to automatically prevent duplicate tabs on every site, with rules you control. No account, no sign-in. All settings and your local “duplicates prevented” count stay on your device.
+Install this duplicate tab blocker to automatically prevent duplicate tabs on all websites or only on sites you list, with rules you control. No account, no sign-in. All settings and your local “duplicates prevented” count stay on your device.
 
 ────────────────────────────────────────────────────────────────────────────────
 WHY USERS SEARCH FOR A DUPLICATE TAB EXTENSION
@@ -15,6 +15,8 @@ HOW DUPLICATE TAB PREVENTION WORKS
 ────────────────────────────────────────────────────────────────────────────────
 
 When a new tab loads, Prevent Duplicate Tabs compares its URL to your open tabs (in all windows or only the current window—you decide). If it finds a duplicate, it runs your chosen action immediately. Set a global default, then override behavior per domain—for example, block duplicates on most sites but allow multiple Gmail or Google Docs tabs where you need them.
+
+Choose where prevention applies: block duplicates on all websites (with an exceptions list), or only on sites you add to a monitored list. When you turn the extension on or change scope or lists, it also scans tabs you already have open and resolves duplicates that match your rules.
 
 ────────────────────────────────────────────────────────────────────────────────
 KEY FEATURES
@@ -36,15 +38,20 @@ Scope and URL matching
 Open in new tab (allow duplicate)
 • Open in new tab (allow duplicate) – Right-click a hyperlink and choose this context menu option to open that URL in a new tab without duplicate prevention, even when your rules would normally block or merge the duplicate.
 
-Exceptions and per-site rules
-• Exceptions list—allow duplicate tabs for specific URLs or entire domains.
+Prevention scope and site lists
+• All websites—prevent duplicates everywhere except URLs or domains on your exceptions list.
+• Listed sites only—prevent duplicates only on domains or pages you add to the monitored list; skip individual pages on a monitored domain when needed.
+• One unified list on the options page—shows exceptions or monitored sites depending on your scope; search, add, edit, and remove entries.
+• Current-domain controls in the popup and options—toggle monitoring or exceptions for this page or this domain without typing URLs.
+
+Per-site rules and popup shortcuts
 • Site-specific rules—set duplicate action and “ignore URL parameters” per domain from the full options page.
-• Popup shortcuts—enable or disable the extension, or allow duplicates for this page or this domain from the toolbar icon.
+• Popup shortcuts—enable or disable the extension, choose prevention scope, and adjust this page or this domain from the toolbar icon.
 
 Control and local stats
 • One-click on/off in the popup.
 • See open tab count and how many duplicates were prevented—stored locally only.
-• Options page for global defaults, exceptions, and site rules (right-click the extension icon → Options).
+• Options page for prevention scope, global defaults, site lists, and per-domain rules (right-click the extension icon → Options).
 
 ────────────────────────────────────────────────────────────────────────────────
 WHO IT IS FOR

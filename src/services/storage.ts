@@ -65,6 +65,10 @@ class StorageService {
       const parsed = JSON.parse(stored) as Partial<ExtensionSettings>;
       return {
         enabled: parsed.enabled ?? DEFAULT_SETTINGS.enabled,
+        preventionScope: parsed.preventionScope ?? DEFAULT_SETTINGS.preventionScope,
+        targetPages: parsed.targetPages ?? DEFAULT_SETTINGS.targetPages,
+        targetDomains: parsed.targetDomains ?? DEFAULT_SETTINGS.targetDomains,
+        targetPageSkips: parsed.targetPageSkips ?? DEFAULT_SETTINGS.targetPageSkips,
         globalSettings: {
           duplicateAction: parsed.globalSettings?.duplicateAction ?? DEFAULT_SETTINGS.globalSettings.duplicateAction,
           ignoreParameters: parsed.globalSettings?.ignoreParameters ?? DEFAULT_SETTINGS.globalSettings.ignoreParameters,
@@ -170,21 +174,9 @@ class StorageService {
     try {
       const localResult = await chrome.storage.local.get(REVIEW_PROMPT_STORAGE_KEY);
       const rawLocal = localResult[REVIEW_PROMPT_STORAGE_KEY];
-      let stored: string | undefined = typeof rawLocal === 'string' ? rawLocal : undefined;
-      if (stored === undefined) {
-        const syncResult = await chrome.storage.sync.get(REVIEW_PROMPT_STORAGE_KEY);
-        const rawSync = syncResult[REVIEW_PROMPT_STORAGE_KEY];
-        if (typeof rawSync === 'string') {
-          stored = rawSync;
-          await chrome.storage.local.set({
-            [REVIEW_PROMPT_STORAGE_KEY]: rawSync,
-          });
-          await chrome.storage.sync.remove(REVIEW_PROMPT_STORAGE_KEY);
-        }
-      }
       let parsed: ReviewPromptState =
-        typeof stored === 'string'
-          ? this.parseReviewPrompt(stored)
+        typeof rawLocal === 'string'
+          ? this.parseReviewPrompt(rawLocal)
           : { ...DEFAULT_REVIEW_PROMPT_STATE };
       if (parsed.firstSeenAt === 0) {
         parsed = { ...parsed, firstSeenAt: Date.now() };

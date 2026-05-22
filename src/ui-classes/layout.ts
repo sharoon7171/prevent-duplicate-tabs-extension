@@ -1,7 +1,13 @@
 export const popupMainStack = 'flex flex-col gap-2 px-2.5 py-2';
 export const optionsMainStack = 'mx-auto flex max-w-5xl flex-col gap-2.5 px-2.5 py-2.5 sm:px-3';
-export const optionsGrid = 'grid grid-cols-1 gap-2.5 lg:grid-cols-2 lg:items-start';
-export const optionsColumnStack = 'flex flex-col gap-2.5';
+export const optionsPairedGrid = 'grid grid-cols-1 gap-2.5 lg:grid-cols-2 lg:items-stretch';
+export const optionsPairedCard = 'flex h-full min-h-0 flex-col';
+
+export const optionsListScroll =
+  'h-72 overflow-y-auto overscroll-y-contain space-y-1.5 pr-1';
+
+export const scrollListFrame =
+  'min-h-0 flex-1 rounded-md border border-gray-200 bg-slate-50/80 p-1';
 
 export const cardShell =
   'relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-linear-to-br from-white to-slate-50 p-2 shadow-card transition-all duration-300 hover:border-gray-300 hover:shadow-lg';
@@ -36,16 +42,12 @@ export const expandableItemShell =
 export const formPanelShell =
   'rounded-lg border border-gray-200 bg-linear-to-br from-white to-slate-50 p-2 shadow-card-sm transition-all duration-200 hover:shadow-md';
 
-export const emptyStateWrap = 'flex flex-1 flex-col justify-center py-4 text-center';
+export const emptyStateWrap = 'flex flex-col items-center justify-center py-8 text-center';
 
 export const emptyStateIcon =
   'mx-auto mb-1.5 flex h-10 w-10 items-center justify-center rounded-full bg-gray-100';
 
 export const emptyStateIconSvg = 'h-5 w-5 text-gray-400';
-
-export const scrollList = 'space-y-1.5 overflow-y-auto max-h-[320px] pr-1';
-
-export const scrollListTall = 'space-y-1.5 overflow-y-auto max-h-[400px] pr-1';
 
 export const headerInner = 'mx-auto max-w-5xl px-2.5 py-1.5 sm:px-3';
 

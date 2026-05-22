@@ -19,6 +19,10 @@ const docsDir = path.join(rootDir, 'docs');
 
 const DEMO_SETTINGS = {
   enabled: true,
+  preventionScope: 'everywhere',
+  targetPages: [],
+  targetDomains: [],
+  targetPageSkips: [],
   globalSettings: {
     duplicateAction: 'close-new-stay-current',
     ignoreParameters: false,
@@ -156,6 +160,8 @@ async function captureTwoOptionPanels() {
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.waitForLoadState('networkidle').catch(() => {});
   await page.waitForTimeout(1200);
+  await page.waitForSelector('h2:text("Extension Status")', { timeout: 10000 }).catch(() => {});
+  await page.waitForSelector('h2:text("Exceptions"), h2:text("Monitored Sites")', { timeout: 10000 }).catch(() => {});
   await applyCaptureScrollbarVisibility(page);
 
   const main = page.locator('main');

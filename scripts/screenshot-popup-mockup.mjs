@@ -5,6 +5,7 @@ import os from 'os';
 import fs from 'fs';
 import { fileURLToPath, pathToFileURL } from 'url';
 
+const POPUP_FRAME = { width: 420, height: 520 };
 const MARKETING_VIEWPORT = { width: 1280, height: 800 };
 const SCROLL_STABILIZE_MS = 420;
 const BEFORE_CAPTURE_MS = 320;
@@ -14,7 +15,7 @@ const CHROME_WEB_STORE_ITEM_URL =
   'https://chromewebstore.google.com/detail/prevent-duplicate-tabs/jjnoehggdfcblljkkeijmooameiaiani';
 const BANNER_EXTENSION_NAME = 'Prevent Duplicate Tabs';
 const BANNER_CTA_DESCRIPTION =
-  'Per-site rules, exceptions, and global defaults — right from the toolbar.';
+  'All websites or listed sites only — exceptions, monitored lists, and per-site rules from the toolbar.';
 const BANNER_CTA_BUTTON = 'Get it on the Chrome Web Store';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -24,6 +25,10 @@ const docsDir = path.join(rootDir, 'docs');
 
 const DEMO_SETTINGS = {
   enabled: true,
+  preventionScope: 'everywhere',
+  targetPages: [],
+  targetDomains: [],
+  targetPageSkips: [],
   globalSettings: { duplicateAction: 'close-new-switch-existing', ignoreParameters: true, duplicateScope: 'all-windows' },
   exceptions: [MOCK_ACTIVE_TAB_URL],
   domainExceptions: ['example.com'],
@@ -217,6 +222,7 @@ async function captureTwoPopupPanels() {
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.waitForLoadState('networkidle').catch(() => {});
   await page.waitForTimeout(1200);
+  await page.waitForSelector('h2:text("Extension Status")', { timeout: 10000 }).catch(() => {});
   const captureSize = await syncViewportToPopupDoc(page);
   await applyCaptureScrollbarVisibility(page);
 
@@ -254,7 +260,8 @@ function writeMockupHtml(basenames, captureSize) {
   const innerRow =
     MARKETING_VIEWPORT.width - framePadX - gapsBetweenThree - separatorW;
   const perShotMaxW = Math.max(280, Math.floor(innerRow / 2));
-  const perShotMaxH = 560;
+  const perShotMaxH = Math.min(560, Math.max(POPUP_FRAME.height, captureSize.height + 16));
+  const separatorH = Math.min(360, Math.max(220, captureSize.height - 72));
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -433,7 +440,7 @@ function writeMockupHtml(basenames, captureSize) {
     }
     .shots-separator-line {
       width: 3px;
-      height: 352px;
+      height: ${separatorH}px;
       border-radius: 3px;
       flex-shrink: 0;
       background: linear-gradient(
@@ -479,18 +486,18 @@ function writeMockupHtml(basenames, captureSize) {
       <div class="shots-row">
         <div class="shot-wrap">
           <div class="shot">
-            <img src="${basenames[0]}" width="${captureSize.width}" height="${captureSize.height}" alt="Popup — top of list (domain settings)">
+            <img src="${basenames[0]}" width="${captureSize.width}" height="${captureSize.height}" alt="Popup — status, scope, and current domain">
           </div>
-          <span class="shot-label">Domain rules and status</span>
+          <span class="shot-label">Scope &amp; current domain</span>
         </div>
         <div class="shots-separator" aria-hidden="true">
           <div class="shots-separator-line"></div>
         </div>
         <div class="shot-wrap">
           <div class="shot">
-            <img src="${basenames[1]}" width="${captureSize.width}" height="${captureSize.height}" alt="Popup — scrolled (global settings)">
+            <img src="${basenames[1]}" width="${captureSize.width}" height="${captureSize.height}" alt="Popup — global settings">
           </div>
-          <span class="shot-label">Global settings</span>
+          <span class="shot-label">Global defaults</span>
         </div>
       </div>
     </div>
@@ -538,7 +545,7 @@ function cleanupScreenshotTempArtifacts() {
 }
 
 async function main() {
-  console.log('Capturing two 800×600-style panels (top + scrolled bottom)...');
+  console.log(`Capturing two ${POPUP_FRAME.width}×${POPUP_FRAME.height} panels (top + scrolled bottom)...`);
   const { captureSize, paths } = await captureTwoPopupPanels();
   console.log('Each panel', captureSize.width, '×', captureSize.height);
   console.log('Building banner (two panels side by side)...');

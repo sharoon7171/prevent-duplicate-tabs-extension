@@ -6,7 +6,7 @@ import {
   ExtensionStatus,
   GlobalSettings,
   CurrentDomainSettings,
-  Exceptions,
+  SiteList,
   SiteSpecificRules,
   Loading,
   Footer,
@@ -15,7 +15,7 @@ import {
 import { storageService } from '@/services/storage';
 import type { ExtensionSettings } from '@/types/settings';
 import { getCurrentTabsCount } from '@/utils/statistics';
-import { optionsColumnStack, optionsGrid, optionsMainStack } from '@/ui-classes/layout';
+import { optionsMainStack, optionsPairedCard, optionsPairedGrid } from '@/ui-classes/layout';
 import '../styles/index.css';
 
 const Options: React.FC = (): React.JSX.Element => {
@@ -85,17 +85,15 @@ const Options: React.FC = (): React.JSX.Element => {
       <main className="flex-1 min-h-0 overflow-y-auto">
         <div className={optionsMainStack}>
           <ReviewPrompt variant="options" enabled={settings.enabled} />
-          <div className={optionsGrid}>
-            <div className={optionsColumnStack}>
-              <CurrentDomainSettings initialSettings={settings} />
-              <ExtensionStatus initialEnabled={settings.enabled} />
-              <GlobalSettings initialGlobalSettings={settings.globalSettings} />
-            </div>
-            <div className="flex flex-col">
-              <Exceptions initialExceptions={settings.exceptions} />
-            </div>
+          <div className={optionsPairedGrid}>
+            <ExtensionStatus initialEnabled={settings.enabled} className={optionsPairedCard} />
+            <GlobalSettings initialGlobalSettings={settings.globalSettings} className={optionsPairedCard} />
           </div>
-          <SiteSpecificRules initialSiteRules={settings.siteRules} />
+          <CurrentDomainSettings initialSettings={settings} />
+          <div className={optionsPairedGrid}>
+            <SiteList className={optionsPairedCard} />
+            <SiteSpecificRules initialSiteRules={settings.siteRules} className={optionsPairedCard} />
+          </div>
         </div>
       </main>
       <Footer />

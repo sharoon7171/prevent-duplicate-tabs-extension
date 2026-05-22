@@ -106,3 +106,25 @@ export function isUrlAllowedForDuplicateCheck(
   const domain = extractDomain(url);
   return isPageInExceptions(url, exceptions) || isDomainInExceptions(domain, domainExceptions);
 }
+
+export function isUrlInPreventionTargets(
+  url: string | undefined,
+  targetPages: string[],
+  targetDomains: string[]
+): boolean {
+  if (!url) return false;
+  const domain = extractDomain(url);
+  return isPageInExceptions(url, targetPages) || isDomainInExceptions(domain, targetDomains);
+}
+
+export function isUrlMonitoredInListedMode(
+  url: string | undefined,
+  targetPages: string[],
+  targetDomains: string[],
+  targetPageSkips: string[]
+): boolean {
+  if (!isUrlInPreventionTargets(url, targetPages, targetDomains)) {
+    return false;
+  }
+  return !isPageInExceptions(url, targetPageSkips);
+}

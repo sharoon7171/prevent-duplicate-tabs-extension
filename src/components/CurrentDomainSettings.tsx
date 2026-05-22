@@ -90,6 +90,27 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
 
   const isPageInExceptionsList = currentUrl ? isPageInExceptions(currentUrl, settings.exceptions) : false;
   const isDomainInExceptionsList = currentDomain ? isDomainInExceptions(currentDomain, settings.domainExceptions) : false;
+  const isPageInSkipsList = currentUrl ? isPageInExceptions(currentUrl, settings.targetPageSkips) : false;
+  const isPageInTargetsList = currentUrl ? isPageInExceptions(currentUrl, settings.targetPages) : false;
+  const isDomainInTargetsList = currentDomain ? isDomainInExceptions(currentDomain, settings.targetDomains) : false;
+  const isListedOnly = settings.preventionScope === 'listed-only';
+  const pageIsMonitored =
+    isPageInTargetsList || (isDomainInTargetsList && !isPageInSkipsList);
+  const pageToggleChecked = isListedOnly ? pageIsMonitored : isPageInExceptionsList;
+  const domainToggleChecked = isListedOnly ? isDomainInTargetsList : isDomainInExceptionsList;
+  const pageToggleLabel = isListedOnly ? 'Monitor this page' : 'Allow duplicates for this page';
+  const domainToggleLabel = isListedOnly
+    ? `Monitor ${currentDomain}`
+    : `Allow duplicates for ${currentDomain}`;
+  const pageToggleDescription = isListedOnly
+    ? isDomainInTargetsList && !isPageInTargetsList
+      ? 'Include this page when the domain is monitored'
+      : 'Prevent duplicate tabs for this specific page'
+    : 'Allow duplicate tabs for this specific page';
+  const domainToggleDescription = isListedOnly
+    ? `Prevent duplicate tabs for all pages on ${currentDomain}`
+    : `Allow duplicate tabs for all pages on ${currentDomain}`;
+  const scopeSectionLabel = isListedOnly ? 'Monitoring' : 'Exceptions';
   const currentSiteRule = settings.siteRules.find((rule) => rule.domain === currentDomain);
   const hasSiteRule = currentSiteRule !== undefined;
 
@@ -124,6 +145,71 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
         });
 
     await storageService.updateSettings({ domainExceptions: updatedDomainExceptions });
+  };
+
+  const handlePageTargetToggle = async (checked: boolean): Promise<void> => {
+    if (!settings || !currentUrl) return;
+
+    const normalizedUrl = normalizeException(currentUrl);
+
+    const updatedTargetPages = checked
+      ? [...settings.targetPages, normalizedUrl].filter((item, index, arr) => arr.indexOf(item) === index)
+      : settings.targetPages.filter((item) => {
+          const normalizedItem = normalizeException(item);
+          return normalizedItem !== normalizedUrl && item !== currentUrl;
+        });
+
+    await storageService.updateSettings({ targetPages: updatedTargetPages });
+  };
+
+  const handleDomainTargetToggle = async (checked: boolean): Promise<void> => {
+    if (!settings || !currentDomain) return;
+
+    const normalizedDomain = normalizeException(currentDomain);
+
+    const updatedTargetDomains = checked
+      ? [...settings.targetDomains, normalizedDomain].filter((item, index, arr) => arr.indexOf(item) === index)
+      : settings.targetDomains.filter((item) => {
+          const normalizedItem = normalizeException(item);
+          return normalizedItem !== normalizedDomain && item !== currentDomain;
+        });
+
+    await storageService.updateSettings({ targetDomains: updatedTargetDomains });
+  };
+
+  const handlePageSkipToggle = async (checked: boolean): Promise<void> => {
+    if (!settings || !currentUrl) return;
+
+    const normalizedUrl = normalizeException(currentUrl);
+
+    const updatedSkips = checked
+      ? [...settings.targetPageSkips, normalizedUrl].filter((item, index, arr) => arr.indexOf(item) === index)
+      : settings.targetPageSkips.filter((item) => {
+          const normalizedItem = normalizeException(item);
+          return normalizedItem !== normalizedUrl && item !== currentUrl;
+        });
+
+    await storageService.updateSettings({ targetPageSkips: updatedSkips });
+  };
+
+  const handlePageToggle = async (checked: boolean): Promise<void> => {
+    if (!isListedOnly) {
+      await handleUrlExceptionToggle(checked);
+      return;
+    }
+    if (isDomainInTargetsList && !isPageInTargetsList) {
+      await handlePageSkipToggle(!checked);
+      return;
+    }
+    await handlePageTargetToggle(checked);
+  };
+
+  const handleDomainToggle = async (checked: boolean): Promise<void> => {
+    if (!isListedOnly) {
+      await handleDomainExceptionToggle(checked);
+      return;
+    }
+    await handleDomainTargetToggle(checked);
   };
 
   const handleCreateOrUpdateSiteRule = async (updates: { duplicateAction?: DuplicateAction; ignoreParameters?: boolean }): Promise<void> => {
@@ -176,23 +262,23 @@ export const CurrentDomainSettings: React.FC<CurrentDomainSettingsProps> = ({
 
       <div className="space-y-1.5">
         <div className="space-y-1.5">
-          <h3 className={textSectionLabel}>Exceptions</h3>
+          <h3 className={textSectionLabel}>{scopeSectionLabel}</h3>
           <div className={accentPanel}>
             <Toggle
-              label="Allow duplicates for this page"
-              description="Allow duplicate tabs for this specific page"
-              checked={isPageInExceptionsList}
-              onChange={handleUrlExceptionToggle}
+              label={pageToggleLabel}
+              description={pageToggleDescription}
+              checked={pageToggleChecked}
+              onChange={handlePageToggle}
               interactiveRow
               className={toggleRowInset}
             />
           </div>
           <div className={accentPanel}>
             <Toggle
-              label="Allow duplicates for this domain"
-              description={`Allow duplicate tabs for all pages on ${currentDomain}`}
-              checked={isDomainInExceptionsList}
-              onChange={handleDomainExceptionToggle}
+              label={domainToggleLabel}
+              description={domainToggleDescription}
+              checked={domainToggleChecked}
+              onChange={handleDomainToggle}
               interactiveRow
               className="w-full p-2.5"
             />

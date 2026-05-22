@@ -90,9 +90,7 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
   };
 
   return (
-    <div
-      className={`${cardShell} ${className}`}
-    >
+    <div className={`${cardShell} flex min-h-0 flex-col ${className}`}>
       <div className={`${gradientBarClass} ${cardShellTopRadius}`} />
       <div className={cardHeaderRow}>
         <div className={cardIconBox}>
@@ -103,7 +101,7 @@ export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
         </div>
         <h2 className={textCardTitle}>Global Settings</h2>
       </div>
-      <div className="space-y-1.5">
+      <div className="flex min-h-0 flex-1 flex-col space-y-1.5">
         <div className={innerPanel}>
           <RadioGroup
             label="When duplicate tab detected"

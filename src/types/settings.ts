@@ -6,6 +6,8 @@ export type DuplicateAction =
 
 export type DuplicateScope = 'all-windows' | 'current-window';
 
+export type PreventionScope = 'everywhere' | 'listed-only';
+
 export interface SiteRule {
   domain: string;
   duplicateAction: DuplicateAction;
@@ -14,12 +16,15 @@ export interface SiteRule {
 
 export interface ExtensionSettings {
   enabled: boolean;
+  preventionScope: PreventionScope;
+  targetPages: string[];
+  targetDomains: string[];
+  targetPageSkips: string[];
   globalSettings: {
     duplicateAction: DuplicateAction;
     ignoreParameters: boolean;
     duplicateScope: DuplicateScope;
   };
-  /** Page-level exceptions (exact URL); domainExceptions are whole-domain. */
   exceptions: string[];
   domainExceptions: string[];
   siteRules: SiteRule[];
@@ -27,6 +32,10 @@ export interface ExtensionSettings {
 
 export const DEFAULT_SETTINGS: ExtensionSettings = {
   enabled: true,
+  preventionScope: 'everywhere',
+  targetPages: [],
+  targetDomains: [],
+  targetPageSkips: [],
   globalSettings: {
     duplicateAction: 'close-new-stay-current',
     ignoreParameters: false,
